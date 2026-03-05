@@ -58,9 +58,9 @@ export async function showStatus(options: {
   }
 
   // Channels
-  if (result.channels.length > 0) {
+  if (result.channels && result.channels.length > 0) {
     console.log();
-    for (const ch of result.channels) {
+    for (const ch of (result.channels ?? [])) {
       const icon = ch.ok ? chalk.green("ok") : chalk.red("fail");
       console.log(`  ${chalk.gray("Channel")} ${ch.name}: ${icon}`);
     }
