@@ -1,6 +1,6 @@
 {
   "name": "openclaw-doctor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Health check and auto-restart daemon for local OpenClaw services",
   "type": "module",
   "bin": {
