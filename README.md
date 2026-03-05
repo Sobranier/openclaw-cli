@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://ecap.iminsp.com/image-generation/0e19b4cbb4ac4ebc8766c31eccb2760d.png" alt="OpenClaw Doctor" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/src/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
 </p>
 
 <h1 align="center">OpenClaw Doctor</h1>
