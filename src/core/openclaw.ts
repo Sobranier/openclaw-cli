@@ -4,6 +4,7 @@ import { homedir } from "node:os";
 import { execSync } from "node:child_process";
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
+import * as http from "node:http";
 const execAsync = promisify(exec);
 
 export interface OpenClawInfo {
@@ -156,6 +157,28 @@ export interface GatewayHealth {
     { configured: boolean; probe: { ok: boolean } }
   >;
   agents: { agentId: string; name: string; isDefault: boolean }[];
+}
+
+
+export async function getGatewayHealthHttp(
+  info: OpenClawInfo,
+): Promise<GatewayHealth | null> {
+  return new Promise((resolve) => {
+    const url = `http://127.0.0.1:${info.gatewayPort}/health`;
+    const req = http.get(url, { timeout: 5000 }, (res) => {
+      let data = "";
+      res.on("data", (chunk) => { data += chunk; });
+      res.on("end", () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch {
+          resolve(null);
+        }
+      });
+    });
+    req.on("error", () => resolve(null));
+    req.on("timeout", () => { req.destroy(); resolve(null); });
+  });
 }
 
 export async function getGatewayHealth(

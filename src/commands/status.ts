@@ -10,7 +10,7 @@ export async function showStatus(options: {
 }) {
   const config = loadConfig(options.config);
   const info = detectOpenClaw(options.profile ?? config.openclawProfile);
-  const result = checkHealth(info);
+  const result = await checkHealth(info);
 
   if (options.json) {
     console.log(

@@ -47,7 +47,7 @@ export async function watchDaemon(options: {
   async function tick() {
     if (isRestarting) return;
 
-    const result = checkHealth(info);
+    const result = await checkHealth(info);
 
     if (result.healthy) {
       consecutiveFailures = 0;
@@ -76,7 +76,7 @@ export async function watchDaemon(options: {
       await restartGateway(info);
 
       log("info", "Waiting 30s for gateway to start...");
-      await new Promise((r) => setTimeout(r, 30_000));
+      await new Promise((r) => setTimeout(r, 60_000));
       isRestarting = false;
     }
   }
