@@ -1,3 +1,4 @@
+import { createRequire } from "node:module";
 import { Command } from "commander";
 import { watchDaemon, stopDaemon } from "./commands/watch.js";
 import { showStatus } from "./commands/status.js";
@@ -6,12 +7,15 @@ import { showLogs } from "./commands/logs.js";
 import { gatewayStart, gatewayStop, gatewayRestart } from "./commands/gateway.js";
 import { startDashboard } from "./dashboard/server.js";
 
+const require = createRequire(import.meta.url);
+const { version } = require("../package.json");
+
 const program = new Command();
 
 program
   .name("openclaw-doctor")
   .description("Health monitor and management daemon for OpenClaw services")
-  .version("0.1.0");
+  .version(version);
 
 // Global options
 const addGlobalOpts = (cmd: Command) =>

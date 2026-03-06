@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw CLI" width="400" />
 </p>
 
-<h1 align="center">OpenClaw Doctor</h1>
+<h1 align="center">OpenClaw CLI</h1>
 
 <p align="center">
   Keep your OpenClaw service alive. Automatically.
@@ -15,8 +15,8 @@
 ## Get Started
 
 ```bash
-npm install -g openclaw-doctor
-openclaw-doctor watch -d
+npm install -g openclaw-cli
+openclaw-cli watch -d
 ```
 
 That's it. Doctor monitors your OpenClaw gateway in the background, restarts it when it goes down, and tells you what happened. Zero configuration needed -- it reads everything from your existing OpenClaw setup.
@@ -24,11 +24,11 @@ That's it. Doctor monitors your OpenClaw gateway in the background, restarts it 
 ## Core Commands
 
 ```bash
-openclaw-doctor watch            # Start monitoring (foreground)
-openclaw-doctor watch -d         # Start monitoring (background)
-openclaw-doctor unwatch          # Stop monitoring
+openclaw-cli watch            # Start monitoring (foreground)
+openclaw-cli watch -d         # Start monitoring (background)
+openclaw-cli unwatch          # Stop monitoring
 
-openclaw-doctor status           # Quick health check
+openclaw-cli status           # Quick health check
 ```
 
 These four commands cover 90% of daily use.
@@ -36,29 +36,29 @@ These four commands cover 90% of daily use.
 ## Gateway Management
 
 ```bash
-openclaw-doctor gateway start    # Start the OpenClaw gateway
-openclaw-doctor gateway stop     # Stop the gateway
-openclaw-doctor gateway restart  # Restart the gateway
+openclaw-cli gateway start    # Start the OpenClaw gateway
+openclaw-cli gateway stop     # Stop the gateway
+openclaw-cli gateway restart  # Restart the gateway
 ```
 
 ## Diagnostics & Logs
 
 ```bash
-openclaw-doctor doctor           # Full diagnostics (binary, gateway, channels)
-openclaw-doctor logs             # View gateway logs
-openclaw-doctor logs --error     # View error logs only
-openclaw-doctor logs --doctor    # View Doctor's own event logs
-openclaw-doctor dashboard        # Web management UI (http://localhost:9090)
+openclaw-cli doctor           # Full diagnostics (binary, gateway, channels)
+openclaw-cli logs             # View gateway logs
+openclaw-cli logs --error     # View error logs only
+openclaw-cli logs --doctor    # View Doctor's own event logs
+openclaw-cli dashboard        # Web management UI (http://localhost:9090)
 ```
 
 ## Install
 
 ```bash
 # npm (recommended)
-npm install -g openclaw-doctor
+npm install -g openclaw-cli
 
 # or run without installing
-npx openclaw-doctor status
+npx openclaw-cli status
 ```
 
 Requires Node >= 22 (same as OpenClaw).
@@ -152,8 +152,8 @@ Channels: **Webhook** (DingTalk, Feishu, Slack, etc.) + **macOS system notificat
 Doctor runs as a standalone daemon, callable by OpenClaw or other tools:
 
 ```bash
-openclaw-doctor status --json    # Machine-readable output
-openclaw-doctor watch -d         # Idempotent -- safe to call repeatedly
+openclaw-cli status --json    # Machine-readable output
+openclaw-cli watch -d         # Idempotent -- safe to call repeatedly
 ```
 
 If the caller crashes, Doctor keeps running.
@@ -216,7 +216,7 @@ npm run build                  # Build for distribution
 
 This repo publishes two npm packages from the same codebase:
 
-- **`openclaw-doctor`** — the main package (`package.json`)
+- **`openclaw-cli`** — the main package (`package.json`)
 - **`openclaw-cli`** — alias package (`package.openclaw-cli.json`)
 
 Both packages share the same version number and dist output.
@@ -233,7 +233,7 @@ npm run release
 
 `npm run release` calls `scripts/publish.sh`, which:
 1. Builds once (`npm run build`)
-2. Publishes `openclaw-doctor` with the default `package.json`
+2. Publishes `openclaw-cli` with the default `package.json`
 3. Temporarily swaps in `package.openclaw-cli.json`, publishes `openclaw-cli`, then restores
 
 To update the `openclaw-cli` package metadata (description, keywords, bin name, etc.), edit `package.openclaw-cli.json`. Keep `version` in sync — it's automatically picked up from whichever `package.json` is active during publish.

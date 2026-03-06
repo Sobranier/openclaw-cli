@@ -27,7 +27,7 @@ export interface DoctorConfig {
 
 const defaults: DoctorConfig = {
   checkInterval: 30,
-  failThreshold: 3,
+  failThreshold: 5,
   dashboardPort: 9090,
   maxRestartsPerHour: 5,
   openclawProfile: "default",

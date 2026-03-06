@@ -5,12 +5,12 @@ import { detectOpenClaw } from "../core/openclaw.js";
 import { checkHealth } from "../core/health-checker.js";
 import { getCheckHistory, getRestartHistory, log } from "../core/logger.js";
 
-function renderHTML(info: ReturnType<typeof detectOpenClaw>): string {
+async function renderHTML(info: ReturnType<typeof detectOpenClaw>): Promise<string> {
   const checks = getCheckHistory();
   const restarts = getRestartHistory();
 
   // Live check for current status
-  const live = checkHealth(info);
+  const live = await checkHealth(info);
 
   const statusText = live.healthy
     ? "HEALTHY"
@@ -124,9 +124,10 @@ export function startDashboard(options: { config?: string; profile?: string }) {
   const info = detectOpenClaw(options.profile ?? config.openclawProfile);
   const port = config.dashboardPort;
 
-  const server = createServer((_req, res) => {
+  const server = createServer(async (_req, res) => {
+    const html = await renderHTML(info);
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.end(renderHTML(info));
+    res.end(html);
   });
 
   server.listen(port, () => {

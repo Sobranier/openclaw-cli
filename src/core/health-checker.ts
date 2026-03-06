@@ -3,6 +3,7 @@ import {
   type OpenClawInfo,
   type GatewayHealth,
   getGatewayHealth,
+  getGatewayHealthHttp,
 } from "./openclaw.js";
 
 export interface HealthResult {
@@ -17,7 +18,11 @@ export interface HealthResult {
 export async function checkHealth(info: OpenClawInfo): Promise<HealthResult> {
   const start = Date.now();
 
-  const health = await getGatewayHealth(info);
+  let health = await getGatewayHealthHttp(info);
+  if (!health) {
+    log("warn", "HTTP probe failed, falling back to CLI health check");
+    health = await getGatewayHealth(info);
+  }
   const durationMs = Date.now() - start;
 
   if (!health) {

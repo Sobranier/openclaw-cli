@@ -24,7 +24,7 @@ export async function runDoctor(options: {
 
   // 2. Check gateway health
   console.log(chalk.gray("\n  [2/4] Gateway health"));
-  const result = checkHealth(info);
+  const result = await checkHealth(info);
   if (result.healthy) {
     console.log(chalk.green(`    Gateway: healthy (port ${info.gatewayPort}, ${result.durationMs}ms)`));
   } else if (result.gateway) {
@@ -49,7 +49,7 @@ export async function runDoctor(options: {
 
   // 4. Run openclaw doctor (proxy)
   console.log(chalk.gray("\n  [4/4] OpenClaw built-in doctor"));
-  const doctorOutput = runOpenClawCmd(info, "doctor");
+  const doctorOutput = await runOpenClawCmd(info, "doctor");
   if (doctorOutput) {
     // Indent and print, strip ANSI art header
     const lines = doctorOutput.split("\n");
