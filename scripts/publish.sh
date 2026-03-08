@@ -26,4 +26,19 @@ mv package.json.bak package.json
 mv README.md.bak README.md
 
 echo ""
-echo "✅ Both packages published successfully"
+echo "📦 Publishing openclaw-manage..."
+cp package.json package.json.bak
+cp README.md README.md.bak
+cp package.openclaw-manage.json package.json
+cp README.openclaw-manage.md README.md
+npm publish --registry $REGISTRY || {
+  mv package.json.bak package.json
+  mv README.md.bak README.md
+  echo "❌ openclaw-manage publish failed"
+  exit 1
+}
+mv package.json.bak package.json
+mv README.md.bak README.md
+
+echo ""
+echo "✅ All three packages published successfully"

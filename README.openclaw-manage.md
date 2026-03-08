@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw Manage" width="400" />
 </p>
 
-<h1 align="center">OpenClaw Doctor</h1>
+<h1 align="center">OpenClaw Manage</h1>
 
 <p align="center">
   Keep your OpenClaw service alive. Automatically.
@@ -12,19 +12,11 @@
   <a href="./README.zh-CN.md">中文文档</a>
 </p>
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/v/openclaw-doctor?label=openclaw-doctor&color=red" alt="npm openclaw-doctor" /></a>
-  &nbsp;
-  <a href="https://www.npmjs.com/package/openclaw-cli"><img src="https://img.shields.io/npm/v/openclaw-cli?label=openclaw-cli&color=blue" alt="npm openclaw-cli" /></a>
-  &nbsp;
-  <a href="https://www.npmjs.com/package/openclaw-manage"><img src="https://img.shields.io/npm/v/openclaw-manage?label=openclaw-manage&color=green" alt="npm openclaw-manage" /></a>
-</p>
-
 ## Get Started
 
 ```bash
-npm install -g openclaw-doctor
-openclaw-doctor watch -d
+npm install -g openclaw-manage
+openclaw-manage watch -d
 ```
 
 That's it. Doctor monitors your OpenClaw gateway in the background, restarts it when it goes down, and tells you what happened. Zero configuration needed -- it reads everything from your existing OpenClaw setup.
@@ -32,11 +24,11 @@ That's it. Doctor monitors your OpenClaw gateway in the background, restarts it 
 ## Core Commands
 
 ```bash
-openclaw-doctor watch            # Start monitoring (foreground)
-openclaw-doctor watch -d         # Start monitoring (background)
-openclaw-doctor unwatch          # Stop monitoring
+openclaw-manage watch            # Start monitoring (foreground)
+openclaw-manage watch -d         # Start monitoring (background)
+openclaw-manage unwatch          # Stop monitoring
 
-openclaw-doctor status           # Quick health check
+openclaw-manage status           # Quick health check
 ```
 
 These four commands cover 90% of daily use.
@@ -44,29 +36,29 @@ These four commands cover 90% of daily use.
 ## Gateway Management
 
 ```bash
-openclaw-doctor gateway start    # Start the OpenClaw gateway
-openclaw-doctor gateway stop     # Stop the gateway
-openclaw-doctor gateway restart  # Restart the gateway
+openclaw-manage gateway start    # Start the OpenClaw gateway
+openclaw-manage gateway stop     # Stop the gateway
+openclaw-manage gateway restart  # Restart the gateway
 ```
 
 ## Diagnostics & Logs
 
 ```bash
-openclaw-doctor doctor           # Full diagnostics (binary, gateway, channels)
-openclaw-doctor logs             # View gateway logs
-openclaw-doctor logs --error     # View error logs only
-openclaw-doctor logs --doctor    # View Doctor's own event logs
-openclaw-doctor dashboard        # Web management UI (http://localhost:9090)
+openclaw-manage doctor           # Full diagnostics (binary, gateway, channels)
+openclaw-manage logs             # View gateway logs
+openclaw-manage logs --error     # View error logs only
+openclaw-manage logs --doctor    # View Doctor's own event logs
+openclaw-manage dashboard        # Web management UI (http://localhost:9090)
 ```
 
 ## Install
 
 ```bash
 # npm (recommended)
-npm install -g openclaw-doctor
+npm install -g openclaw-manage
 
 # or run without installing
-npx openclaw-doctor status
+npx openclaw-manage status
 ```
 
 Requires Node >= 22 (same as OpenClaw).
@@ -160,8 +152,8 @@ Channels: **Webhook** (DingTalk, Feishu, Slack, etc.) + **macOS system notificat
 Doctor runs as a standalone daemon, callable by OpenClaw or other tools:
 
 ```bash
-openclaw-doctor status --json    # Machine-readable output
-openclaw-doctor watch -d         # Idempotent -- safe to call repeatedly
+openclaw-manage status --json    # Machine-readable output
+openclaw-manage watch -d         # Idempotent -- safe to call repeatedly
 ```
 
 If the caller crashes, Doctor keeps running.
@@ -224,8 +216,8 @@ npm run build                  # Build for distribution
 
 This repo publishes two npm packages from the same codebase:
 
-- **`openclaw-doctor`** — the main package (`package.json`)
-- **`openclaw-cli`** — alias package (`package.openclaw-cli.json`)
+- **`openclaw-manage`** — the main package (`package.json`)
+- **`openclaw-manage`** — alias package (`package.openclaw-manage.json`)
 
 Both packages share the same version number and dist output.
 
@@ -241,7 +233,7 @@ npm run release
 
 `npm run release` calls `scripts/publish.sh`, which:
 1. Builds once (`npm run build`)
-2. Publishes `openclaw-doctor` with the default `package.json`
-3. Temporarily swaps in `package.openclaw-cli.json`, publishes `openclaw-cli`, then restores
+2. Publishes `openclaw-manage` with the default `package.json`
+3. Temporarily swaps in `package.openclaw-manage.json`, publishes `openclaw-manage`, then restores
 
-To update the `openclaw-cli` package metadata (description, keywords, bin name, etc.), edit `package.openclaw-cli.json`. Keep `version` in sync — it's automatically picked up from whichever `package.json` is active during publish.
+To update the `openclaw-manage` package metadata (description, keywords, bin name, etc.), edit `package.openclaw-manage.json`. Keep `version` in sync — it's automatically picked up from whichever `package.json` is active during publish.
