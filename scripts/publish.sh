@@ -13,7 +13,6 @@ ALL_ALIASES=(
   openclaw-tools
   openclaw-utils
   openclaw-gateway
-  openclaw-setup
   openclaw-install
   openclaw-run
   openclaw-start
