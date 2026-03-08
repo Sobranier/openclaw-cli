@@ -12,6 +12,12 @@
   <a href="./README.zh-CN.md">中文文档</a>
 </p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/v/openclaw-doctor?label=openclaw-doctor&color=red" alt="npm openclaw-doctor" /></a>
+  &nbsp;
+  <a href="https://www.npmjs.com/package/openclaw-cli"><img src="https://img.shields.io/npm/v/openclaw-cli?label=openclaw-cli&color=blue" alt="npm openclaw-cli" /></a>
+</p>
+
 ## Get Started
 
 ```bash

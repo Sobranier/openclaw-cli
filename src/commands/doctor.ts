@@ -1,19 +1,91 @@
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import chalk from "chalk";
 import { loadConfig } from "../config.js";
 import { detectOpenClaw, runOpenClawCmd } from "../core/openclaw.js";
 import { checkHealth } from "../core/health-checker.js";
 
+interface ConfigIssue {
+  path: string;
+  message: string;
+  fix: () => void;
+}
+
+function findConfigIssues(configPath: string): ConfigIssue[] {
+  if (!existsSync(configPath)) return [];
+
+  let raw: any;
+  try {
+    raw = JSON.parse(readFileSync(configPath, "utf-8"));
+  } catch {
+    return [{ path: "root", message: "Config file is not valid JSON", fix: () => {} }];
+  }
+
+  const issues: ConfigIssue[] = [];
+
+  // Check agents.list[].workspace — must be string, not array
+  if (Array.isArray(raw.agents?.list)) {
+    for (let i = 0; i < raw.agents.list.length; i++) {
+      const agent = raw.agents.list[i];
+      if (Array.isArray(agent.workspace)) {
+        const idx = i;
+        issues.push({
+          path: `agents.list.${i}.workspace`,
+          message: `Invalid input: expected string, received array`,
+          fix: () => {
+            raw.agents.list[idx].workspace = raw.agents.list[idx].workspace[0];
+          },
+        });
+      }
+    }
+  }
+
+  // Attach a save helper
+  if (issues.length > 0) {
+    const originalFixes = issues.map((issue) => issue.fix);
+    for (let i = 0; i < issues.length; i++) {
+      const origFix = originalFixes[i];
+      issues[i].fix = () => {
+        origFix();
+        writeFileSync(configPath, JSON.stringify(raw, null, 2) + "\n");
+      };
+    }
+  }
+
+  return issues;
+}
+
 export async function runDoctor(options: {
   config?: string;
   profile?: string;
+  fix?: boolean;
 }) {
   const config = loadConfig(options.config);
   const info = detectOpenClaw(options.profile ?? config.openclawProfile);
 
   console.log(chalk.bold("\n  OpenClaw Doctor — Full Diagnostics\n"));
 
+  // 0. Config validation & auto-fix
+  console.log(chalk.gray("  [0/4] Config validation"));
+  const issues = findConfigIssues(info.configPath);
+  if (issues.length === 0) {
+    console.log(chalk.green("    Config: valid"));
+  } else {
+    for (const issue of issues) {
+      console.log(chalk.red(`    ${issue.path}: ${issue.message}`));
+    }
+    if (options.fix) {
+      for (const issue of issues) {
+        issue.fix();
+        console.log(chalk.green(`    Fixed: ${issue.path}`));
+      }
+      console.log(chalk.green(`    Config saved: ${info.configPath}`));
+    } else {
+      console.log(chalk.yellow("    Run with --fix to auto-repair"));
+    }
+  }
+
   // 1. Check openclaw binary
-  console.log(chalk.gray("  [1/4] OpenClaw binary"));
+  console.log(chalk.gray("\n  [1/4] OpenClaw binary"));
   if (info.cliBinPath) {
     console.log(chalk.green(`    Found: ${info.cliBinPath}`));
     console.log(chalk.gray(`    Node: ${info.nodePath}`));
