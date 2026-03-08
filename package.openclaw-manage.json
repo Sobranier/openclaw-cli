@@ -1,6 +1,6 @@
 {
   "name": "openclaw-manage",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Health check and auto-restart daemon for local OpenClaw services",
   "type": "module",
   "bin": {

@@ -21,6 +21,20 @@ ALL_ALIASES=(
   openclaw-health
 )
 
+# Sync version from main package.json to all alias package.json files
+VERSION=$(node -p "require('./package.json').version")
+echo "🔄 Syncing version $VERSION to all alias packages..."
+for pkg in "${ALL_ALIASES[@]}"; do
+  if [ -f "package.${pkg}.json" ]; then
+    node -e "
+      const fs = require('fs');
+      const p = JSON.parse(fs.readFileSync('package.${pkg}.json', 'utf8'));
+      p.version = '$VERSION';
+      fs.writeFileSync('package.${pkg}.json', JSON.stringify(p, null, 2) + '\n');
+    "
+  fi
+done
+
 echo "🔨 Building..."
 npm run build
 
