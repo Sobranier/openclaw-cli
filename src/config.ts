@@ -1,11 +1,11 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { homedir } from "node:os";
+import { APP_HOME } from "./brand.js";
 
-export const DOCTOR_HOME = join(homedir(), ".openclaw-doctor");
-export const CONFIG_PATH = join(DOCTOR_HOME, "config.json");
-export const DOCTOR_LOG_DIR = join(DOCTOR_HOME, "logs");
-export const PID_FILE = join(DOCTOR_HOME, "daemon.pid");
+export const DOCTOR_HOME = APP_HOME;
+export const CONFIG_PATH = join(APP_HOME, "config.json");
+export const DOCTOR_LOG_DIR = join(APP_HOME, "logs");
+export const PID_FILE = join(APP_HOME, "daemon.pid");
 
 export interface DoctorConfig {
   checkInterval: number;
