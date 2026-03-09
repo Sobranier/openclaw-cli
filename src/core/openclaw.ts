@@ -17,7 +17,7 @@ export interface OpenClawInfo {
   logDir: string;
   profile: string;
   channels: string[];
-  agents: { id: string; name: string; isDefault: boolean }[];
+  agents: { id: string; name: string; isDefault: boolean; model?: string; workspace?: string }[];
   version: string | null;
 }
 
@@ -119,10 +119,12 @@ export function detectOpenClaw(profile = "default"): OpenClawInfo {
     // Agents
     if (raw.agents?.list) {
       defaults.agents = raw.agents.list.map(
-        (a: { id: string; name?: string; default?: boolean }) => ({
+        (a: { id: string; name?: string; default?: boolean; model?: string | { primary?: string }; workspace?: string }) => ({
           id: a.id,
           name: a.name ?? a.id,
           isDefault: a.default ?? false,
+          model: typeof a.model === "string" ? a.model : (a.model?.primary ?? raw.agents?.defaults?.model?.primary ?? undefined),
+          workspace: a.workspace,
         }),
       );
     }
@@ -149,6 +151,14 @@ export async function runOpenClawCmd(
   }
 }
 
+export interface AgentRuntime {
+  agentId: string;
+  name: string;
+  isDefault: boolean;
+  heartbeat?: { enabled: boolean; every: string };
+  sessions?: { count: number; recent: { key: string; updatedAt: number; age: number }[] };
+}
+
 export interface GatewayHealth {
   ok: boolean;
   durationMs: number;
@@ -156,7 +166,7 @@ export interface GatewayHealth {
     string,
     { configured: boolean; probe: { ok: boolean } }
   >;
-  agents: { agentId: string; name: string; isDefault: boolean }[];
+  agents: AgentRuntime[];
 }
 
 

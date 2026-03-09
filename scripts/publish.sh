@@ -5,6 +5,7 @@ REGISTRY="https://registry.npmjs.org"
 
 ALL_ALIASES=(
   openclaw-cli
+  openclaw-upgrade
   openclaw-manage
   openclaw-service
   openclaw-daemon

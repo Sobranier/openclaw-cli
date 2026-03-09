@@ -134,5 +134,25 @@ export async function runDoctor(options: {
     console.log(chalk.yellow("    Could not run openclaw doctor"));
   }
 
+  // 5. Auto-repair (--fix only, when gateway unhealthy)
+  if (options.fix) {
+    console.log(chalk.gray("\n  [5/5] Auto-repair"));
+    if (!result.healthy) {
+      console.log(chalk.yellow("    Gateway unhealthy — running openclaw doctor --repair --non-interactive"));
+      const repairOutput = await runOpenClawCmd(info, "doctor --repair --non-interactive");
+      if (repairOutput) {
+        const lines = repairOutput.split("\n");
+        for (const line of lines.slice(0, 30)) {
+          if (line.trim()) console.log(`    ${line}`);
+        }
+        console.log(chalk.green("    Repair completed"));
+      } else {
+        console.log(chalk.yellow("    Could not run repair (openclaw CLI unavailable)"));
+      }
+    } else {
+      console.log(chalk.green("    Gateway healthy — no repair needed"));
+    }
+  }
+
   console.log();
 }
