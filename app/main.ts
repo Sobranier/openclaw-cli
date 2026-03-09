@@ -16,7 +16,9 @@ import * as http from "node:http";
 const DASHBOARD_PORT = 9090;
 const DASHBOARD_URL = `http://localhost:${DASHBOARD_PORT}`;
 const HEALTH_INTERVAL_MS = 30_000;
-const SERVER_SCRIPT = path.join(__dirname, "../app/server-process.js");
+// In dev: __dirname = app-dist/, script is app-dist/server-process.js
+// In packaged: __dirname = .../app.asar/app-dist/, script is same
+const SERVER_SCRIPT = path.join(__dirname, "server-process.js");
 
 // Icon paths (relative to app bundle Resources or dev project root)
 const ICON_PATH = path.join(
@@ -32,15 +34,85 @@ let serverProc: ChildProcess | null = null;
 let isHealthy = true;
 
 // ── Server lifecycle ───────────────────────────────────────────────────────
-function startServer() {
-  serverProc = fork(SERVER_SCRIPT, [], {
-    env: { ...process.env, OPENCLAW_PROFILE: "default" },
-    stdio: "ignore",
+/** Check if dashboard server is already running on the port */
+function isServerRunning(): Promise<boolean> {
+  return new Promise((resolve) => {
+    http.get(`${DASHBOARD_URL}/api/status`, { timeout: 1000 }, (res) => {
+      resolve(res.statusCode === 200);
+    }).on("error", () => resolve(false))
+      .on("timeout", () => resolve(false));
   });
-  serverProc.on("exit", (code) => {
-    console.log(`[app] server process exited (code ${code}), restarting in 3s`);
+}
+
+function isPortInUse(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    http.get(`http://127.0.0.1:${port}/api/status`, { timeout: 1000 }, (res) => {
+      resolve(res.statusCode === 200);
+    }).on("error", () => resolve(false));
+  });
+}
+
+function findCLI(): string | null {
+  // Try env PATH first, then common nvm paths
+  const { execSync } = require("node:child_process");
+  try { return execSync("which openclaw-doctor", { encoding: "utf-8" }).trim(); } catch {}
+  const home = process.env.HOME ?? "";
+  const candidates = [
+    `${home}/.nvm/versions/node/v24.14.0/bin/openclaw-doctor`,
+    `${home}/.nvm/versions/node/v22.13.0/bin/openclaw-doctor`,
+    `/usr/local/bin/openclaw-doctor`,
+    `/opt/homebrew/bin/openclaw-doctor`,
+  ];
+  const { existsSync } = require("node:fs");
+  return candidates.find(existsSync) ?? null;
+}
+
+async function startServer() {
+  if (await isPortInUse(DASHBOARD_PORT)) {
+    console.log("[app] dashboard already running, reusing");
+    return;
+  }
+
+  const cli = findCLI();
+  if (!cli) {
+    console.error("[app] openclaw-doctor CLI not found — install with: npm install -g openclaw-doctor");
+    return;
+  }
+
+  // Use system node (not Electron's node) to run the CLI
+  const { spawnSync: _ss, spawn } = require("node:child_process");
+  // Find system node
+  let nodeExec = "/usr/local/bin/node";
+  try {
+    const nvmNode = _ss("bash", ["-lc", "which node"], { encoding: "utf-8" });
+    if (nvmNode.stdout?.trim()) nodeExec = nvmNode.stdout.trim();
+  } catch {}
+
+  console.log(`[app] Starting: ${nodeExec} ${cli} monitor`);
+  serverProc = spawn(nodeExec, [cli, "monitor"], {
+    env: { ...process.env, PATH: `/usr/local/bin:/opt/homebrew/bin:${process.env.PATH}` },
+    stdio: "pipe",
+  }) as unknown as ChildProcess;
+
+  serverProc.stderr?.on("data", (d: Buffer) => console.error("[monitor]", d.toString().trim()));
+  serverProc.stdout?.on("data", (d: Buffer) => console.log("[monitor]", d.toString().trim()));
+
+  serverProc.on("exit", (code: number | null) => {
+    console.log(`[app] monitor exited (code ${code}), retry in 3s`);
+    serverProc = null;
     setTimeout(startServer, 3000);
   });
+}
+
+async function ensureServer(): Promise<void> {
+  // If already running (e.g. openclaw-doctor watch --dashboard), reuse it
+  const already = await isServerRunning();
+  if (already) {
+    console.log("[app] Dashboard server already running, reusing existing instance");
+    return;
+  }
+  startServer();
+  await waitForServer();
 }
 
 function waitForServer(retries = 20): Promise<void> {
@@ -48,7 +120,7 @@ function waitForServer(retries = 20): Promise<void> {
     let attempts = 0;
     const check = () => {
       http
-        .get(`${DASHBOARD_URL}/api/status`, (res) => {
+        .get(`${DASHBOARD_URL}/api/status`, { timeout: 2000 }, (res) => {
           if (res.statusCode === 200) return resolve();
           retry();
         })
@@ -189,10 +261,8 @@ app.on("ready", async () => {
   if (process.platform === "darwin") app.dock?.hide();
 
   createTray();
-  startServer();
-
   try {
-    await waitForServer();
+    await ensureServer();
   } catch {
     console.warn("[app] server warmup timed out, opening anyway");
   }
