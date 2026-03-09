@@ -29,3 +29,6 @@ dist/
 logs/
 *.log
 dist-app/
+dist/
+dist-app/
+app-dist/
