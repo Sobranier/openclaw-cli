@@ -11,7 +11,10 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit",
-    "release": "bash scripts/publish.sh"
+    "release": "bash scripts/publish.sh",
+    "app:compile": "tsc -p tsconfig.app.json",
+    "app:dev": "npm run app:compile && electron .",
+    "app:build": "npm run app:compile && electron-builder"
   },
   "keywords": [
     "openclaw",
@@ -39,6 +42,8 @@
   },
   "devDependencies": {
     "@types/node": "^25.3.3",
+    "electron": "^40.8.0",
+    "electron-builder": "^26.8.1",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
@@ -47,5 +52,6 @@
   "bugs": {
     "url": "https://github.com/Sobranier/openclaw-doctor/issues"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme"
+  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme",
+  "main": "app-dist/main.js"
 }

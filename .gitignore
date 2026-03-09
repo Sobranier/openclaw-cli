@@ -2,6 +2,8 @@ node_modules/
 dist/
 *.js
 *.d.ts
+!electron-builder.config.js
+!*.config.js
 *.js.map
 !jest.config.js
 
@@ -26,3 +28,4 @@ Thumbs.db
 dist/
 logs/
 *.log
+dist-app/
