@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw daemon" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/welcome.png" alt="OpenClaw daemon" width="400" />
 </p>
 
 <h1 align="center">OpenClaw daemon</h1>

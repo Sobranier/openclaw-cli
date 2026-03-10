@@ -1,8 +1,14 @@
 {
   "name": "megaclaw",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CLI and health-watch daemon for OpenClaw AI assistant gateway",
-  "keywords": ["openclaw", "cli", "ai", "daemon", "health-check"],
+  "keywords": [
+    "openclaw",
+    "cli",
+    "ai",
+    "daemon",
+    "health-check"
+  ],
   "main": "./dist/index.js",
   "bin": {
     "megaclaw": "./dist/index.js"
@@ -10,8 +16,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Sobranier/openclaw-doctor.git"
+    "url": "https://github.com/Sobranier/openclaw-cli.git"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-doctor",
-  "engines": { "node": ">=22" }
+  "homepage": "https://github.com/Sobranier/openclaw-cli",
+  "engines": {
+    "node": ">=22"
+  }
 }

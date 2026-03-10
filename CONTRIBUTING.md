@@ -5,7 +5,7 @@ Thanks for taking the time to contribute!
 ## Development Setup
 
 ```bash
-git clone https://github.com/Sobranier/openclaw-doctor.git
+git clone https://github.com/Sobranier/openclaw-cli.git
 cd openclaw-doctor
 npm install
 ```

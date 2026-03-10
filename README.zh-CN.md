@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
 </p>
 
 <h1 align="center">OpenClaw Doctor</h1>
@@ -181,7 +181,7 @@ openclaw-doctor watch -d         # 幂等——重复调用安全
 ## 开发
 
 ```bash
-git clone https://github.com/Sobranier/openclaw-doctor.git
+git clone https://github.com/Sobranier/openclaw-cli.git
 cd openclaw-doctor
 npm install
 

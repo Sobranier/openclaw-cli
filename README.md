@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
 </p>
 
 <h1 align="center">OpenClaw Doctor</h1>
@@ -50,7 +50,7 @@ openclaw-doctor watch -d
 That's it. Doctor is now running in the background. It reads everything from your existing OpenClaw setup — no configuration needed.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/demo.gif" alt="OpenClaw Doctor demo" width="700" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/demo.gif" alt="OpenClaw Doctor demo" width="700" />
 </p>
 
 ## Core Commands
@@ -219,7 +219,7 @@ openclaw-doctor watch -d         # Idempotent — safe to call repeatedly
 ## Development
 
 ```bash
-git clone https://github.com/Sobranier/openclaw-doctor.git
+git clone https://github.com/Sobranier/openclaw-cli.git
 cd openclaw-doctor
 npm install
 

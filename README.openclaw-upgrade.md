@@ -10,4 +10,4 @@ openclaw-upgrade status
 ```
 
 This is an alias. All commands are identical to `openclaw-doctor`.
-See the [full documentation](https://github.com/Sobranier/openclaw-doctor#readme).
+See the [full documentation](https://github.com/Sobranier/openclaw-cli#readme).

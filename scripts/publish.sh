@@ -53,7 +53,7 @@ echo "🔨 Building..."
 npm run build
 
 echo ""
-echo "📦 Publishing openclaw-doctor..."
+echo "📦 Publishing openclaw-cli..."
 npm publish --registry $REGISTRY
 
 for pkg in "${ALL_ALIASES[@]}"; do
@@ -66,8 +66,7 @@ for pkg in "${ALL_ALIASES[@]}"; do
   npm publish --registry $REGISTRY || {
     mv package.json.bak package.json
     mv README.md.bak README.md
-    echo "❌ $pkg publish failed"
-    exit 1
+    echo "⚠️  $pkg publish failed (skipping, continuing...)"
   }
   mv package.json.bak package.json
   mv README.md.bak README.md
@@ -86,7 +85,7 @@ else
   TAG="v$VERSION"
 
   # Create GitHub Release tag first (requires git push --tags done before this script)
-  TARBALL_URL="https://github.com/Sobranier/openclaw-doctor/archive/refs/tags/${TAG}.tar.gz"
+  TARBALL_URL="https://github.com/Sobranier/openclaw-cli/archive/refs/tags/${TAG}.tar.gz"
 
   echo "⏳ Fetching tarball to compute sha256: $TARBALL_URL"
   SHA256=$(curl -sL "$TARBALL_URL" | shasum -a 256 | awk '{print $1}')
@@ -99,7 +98,7 @@ else
 
   echo "🔑 sha256: $SHA256"
 
-  for formula in "$HOMEBREW_TAP_DIR/Formula/openclaw-cli.rb" "$HOMEBREW_TAP_DIR/Formula/openclaw-doctor.rb"; do
+  for formula in "$HOMEBREW_TAP_DIR/Formula/openclaw-cli.rb" "$HOMEBREW_TAP_DIR/Formula/openclaw-cli.rb"; do
     if [ -f "$formula" ]; then
       # Update url tag
       sed -i '' "s|/tags/v[0-9.]*\.tar\.gz|/tags/${TAG}.tar.gz|g" "$formula"

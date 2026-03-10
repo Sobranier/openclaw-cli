@@ -19,4 +19,4 @@ qclaw status         # Health check
 qclaw unwatch        # Stop monitoring
 ```
 
-For full documentation, see [openclaw-cli](https://github.com/Sobranier/openclaw-doctor).
+For full documentation, see [openclaw-cli](https://github.com/Sobranier/openclaw-cli).

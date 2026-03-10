@@ -1,6 +1,6 @@
 {
   "name": "openclaw-upgrade",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Upgrade helper for local OpenClaw services",
   "type": "module",
   "bin": {
@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sobranier/openclaw-doctor.git"
+    "url": "git+https://github.com/Sobranier/openclaw-cli.git"
   },
   "files": [
     "dist",
