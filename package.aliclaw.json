@@ -1,6 +1,6 @@
 {
   "name": "aliclaw",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CLI and health-watch daemon for OpenClaw AI assistant gateway",
   "keywords": [
     "openclaw",

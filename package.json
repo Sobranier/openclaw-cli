@@ -1,6 +1,6 @@
 {
   "name": "openclaw-doctor",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Health check and auto-restart daemon for local OpenClaw services",
   "type": "module",
   "bin": {
@@ -11,7 +11,10 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit",
-    "release": "bash scripts/publish.sh"
+    "release": "bash scripts/publish.sh",
+    "app:start": "electron .",
+    "app:package": "electron-forge package",
+    "app:make": "electron-forge make"
   },
   "keywords": [
     "openclaw",
@@ -38,7 +41,12 @@
     "commander": "^14.0.3"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.11.1",
+    "@electron-forge/maker-dmg": "^7.11.1",
+    "@electron-forge/maker-zip": "^7.11.1",
     "@types/node": "^25.3.3",
+    "electron": "^40.8.0",
+    "electron-builder": "^26.8.1",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
@@ -47,5 +55,7 @@
   "bugs": {
     "url": "https://github.com/Sobranier/openclaw-doctor/issues"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme"
+  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme",
+  "main": "app-dist/main.js",
+  "productName": "OpenClaw CLI"
 }

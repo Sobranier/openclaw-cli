@@ -1,12 +1,25 @@
 {
   "name": "pddclaw",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CLI and health-watch daemon for OpenClaw AI assistant gateway",
-  "keywords": ["openclaw", "cli", "ai", "daemon", "health-check"],
+  "keywords": [
+    "openclaw",
+    "cli",
+    "ai",
+    "daemon",
+    "health-check"
+  ],
   "main": "./dist/index.js",
-  "bin": { "pddclaw": "./dist/index.js" },
+  "bin": {
+    "pddclaw": "./dist/index.js"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/Sobranier/openclaw-cli.git" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sobranier/openclaw-cli.git"
+  },
   "homepage": "https://github.com/Sobranier/openclaw-cli",
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }

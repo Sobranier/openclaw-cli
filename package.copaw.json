@@ -1,5 +1,5 @@
 {
-  "name": "nflxclaw",
+  "name": "copaw",
   "version": "0.3.2",
   "description": "CLI and health-watch daemon for OpenClaw AI assistant gateway",
   "keywords": [
@@ -11,7 +11,7 @@
   ],
   "main": "./dist/index.js",
   "bin": {
-    "nflxclaw": "./dist/index.js"
+    "copaw": "./dist/index.js"
   },
   "license": "MIT",
   "repository": {
