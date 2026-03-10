@@ -1,4 +1,4 @@
-import { createRequire } from "node:module";
+// version injected at build time by tsup define
 import { spawnSync } from "node:child_process";
 import { Command } from "commander";
 import { BINARY_NAME, DISPLAY_NAME } from "./brand.js";
@@ -7,11 +7,13 @@ import { showStatus } from "./commands/status.js";
 import { runDoctor } from "./commands/doctor.js";
 import { showLogs } from "./commands/logs.js";
 import { gatewayStart, gatewayStop, gatewayRestart } from "./commands/gateway.js";
+import { memoryStatus, memorySearch, memoryCompact } from "./commands/memory.js";
 import { startDashboard } from "./dashboard/server.js";
 import { detectOpenClaw } from "./core/openclaw.js";
 
-const require = createRequire(import.meta.url);
-const { version } = require("../package.json");
+declare const __PACKAGE_VERSION__: string;
+const _PKG_VER = typeof __PACKAGE_VERSION__ !== 'undefined' ? __PACKAGE_VERSION__ : '0.2.1';
+const version = _PKG_VER;
 
 const program = new Command();
 
@@ -69,6 +71,27 @@ const gw = program
 addGlobalOpts(gw.command("start").description("Start the gateway")).action(gatewayStart);
 addGlobalOpts(gw.command("stop").description("Stop the gateway")).action(gatewayStop);
 addGlobalOpts(gw.command("restart").description("Restart the gateway")).action(gatewayRestart);
+
+// ── Memory management ──
+
+const mem = program
+  .command("memory")
+  .description("Memory file health and management");
+
+addGlobalOpts(mem.command("status").description("Show MEMORY.md size and health per agent"))
+  .action(memoryStatus);
+
+addGlobalOpts(
+  mem.command("search")
+    .description("Search agent memory files")
+    .argument("<query>", "Search query"),
+).action((query, options) => memorySearch(query, options));
+
+addGlobalOpts(
+  mem.command("compact")
+    .description("Compact agent memory (proxies to openclaw memory compact)")
+    .option("--dry-run", "Preview without applying"),
+).action(memoryCompact);
 
 // ── Logs: proxy to openclaw, but keep --doctor flag for our own logs ──
 

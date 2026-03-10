@@ -10,6 +10,7 @@ export interface HealthResult {
   healthy: boolean;
   gateway: boolean;
   channels: { name: string; ok: boolean }[];
+  agentRuntimes: import("./openclaw.js").AgentRuntime[];
   durationMs: number;
   error?: string;
   raw?: GatewayHealth;
@@ -34,7 +35,7 @@ export async function checkHealth(info: OpenClawInfo): Promise<HealthResult> {
       responseTime: durationMs,
     });
     log("error", `Health check failed: ${error} (${durationMs}ms)`);
-    return { healthy: false, gateway: false, channels: [], durationMs, error };
+    return { healthy: false, gateway: false, channels: [], agentRuntimes: [], durationMs, error };
   }
 
   const channels = health.channels
@@ -45,6 +46,7 @@ export async function checkHealth(info: OpenClawInfo): Promise<HealthResult> {
     : [];
 
   const healthy = health.ok;
+  const agentRuntimes = health.agents ?? [];
 
   addCheckRecord({
     timestamp: new Date().toISOString(),
@@ -58,5 +60,5 @@ export async function checkHealth(info: OpenClawInfo): Promise<HealthResult> {
     log("warn", `Health degraded — gateway responded but ok=false (${durationMs}ms)`);
   }
 
-  return { healthy, gateway: true, channels, durationMs, raw: health };
+  return { healthy, gateway: true, channels, agentRuntimes, durationMs, raw: health };
 }
