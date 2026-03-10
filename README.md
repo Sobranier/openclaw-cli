@@ -2,20 +2,20 @@
   <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/welcome.png" alt="OpenClaw Doctor" width="400" />
 </p>
 
-<h1 align="center">OpenClaw Doctor</h1>
+<h1 align="center">OpenClaw CLI</h1>
 
 <p align="center">
   Keep your OpenClaw service alive. Automatically.
 </p>
 
 <p align="center">
-  <a href="./README.zh-CN.md">中文文档</a>
+  <a href="./README.zh-CN.md">中文文档</a> | <a href="https://openclaw-cli.app">🌐 官网</a>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/v/openclaw-doctor?label=openclaw-doctor&color=red" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/v/openclaw-cli?label=openclaw-cli&color=blue" alt="npm version" /></a>
   &nbsp;
-  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/dm/openclaw-doctor?color=red" alt="npm downloads" /></a>
+  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/dm/openclaw-cli?color=blue" alt="npm downloads" /></a>
   &nbsp;
   <a href="https://www.npmjs.com/package/openclaw-cli"><img src="https://img.shields.io/npm/v/openclaw-cli?label=openclaw-cli&color=blue" alt="npm openclaw-cli" /></a>
   &nbsp;

@@ -55,7 +55,7 @@
   "bugs": {
     "url": "https://github.com/Sobranier/openclaw-doctor/issues"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme",
+  "homepage": "https://openclaw-cli.app",
   "main": "app-dist/main.js",
   "productName": "OpenClaw CLI"
 }

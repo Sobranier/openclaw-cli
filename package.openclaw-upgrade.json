@@ -1,7 +1,7 @@
 {
   "name": "openclaw-upgrade",
   "version": "0.3.2",
-  "description": "Upgrade helper for local OpenClaw services",
+  "description": "AI assistant gateway watchdog \u2014 alias for openclaw-cli. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {
     "openclaw-upgrade": "./dist/index.js"
@@ -14,8 +14,11 @@
   },
   "keywords": [
     "openclaw",
-    "upgrade",
-    "update",
+    "openclaw-cli",
+    "ai",
+    "daemon",
+    "gateway",
+    "watchdog",
     "health-check"
   ],
   "license": "MIT",
@@ -44,7 +47,7 @@
   },
   "author": "pdd <ywq1991@gmail.com>",
   "bugs": {
-    "url": "https://github.com/Sobranier/openclaw-doctor/issues"
+    "url": "https://github.com/Sobranier/openclaw-cli/issues"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme"
+  "homepage": "https://openclaw-cli.app"
 }

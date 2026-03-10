@@ -1,12 +1,14 @@
 {
   "name": "metaclaw",
   "version": "0.3.2",
-  "description": "CLI and health-watch daemon for OpenClaw AI assistant gateway",
+  "description": "AI assistant gateway watchdog \u2014 alias for openclaw-cli. Visit https://openclaw-cli.app",
   "keywords": [
     "openclaw",
-    "cli",
+    "openclaw-cli",
     "ai",
     "daemon",
+    "gateway",
+    "watchdog",
     "health-check"
   ],
   "main": "./dist/index.js",
@@ -18,8 +20,11 @@
     "type": "git",
     "url": "https://github.com/Sobranier/openclaw-cli.git"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-cli",
+  "homepage": "https://openclaw-cli.app",
   "engines": {
     "node": ">=22"
+  },
+  "bugs": {
+    "url": "https://github.com/Sobranier/openclaw-cli/issues"
   }
 }

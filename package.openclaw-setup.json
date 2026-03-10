@@ -1,7 +1,7 @@
 {
   "name": "openclaw-setup",
   "version": "0.3.2",
-  "description": "Health check and auto-restart daemon for local OpenClaw services",
+  "description": "AI assistant gateway watchdog \u2014 alias for openclaw-cli. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {
     "openclaw-setup": "./dist/index.js"
@@ -14,10 +14,12 @@
   },
   "keywords": [
     "openclaw",
-    "health-check",
+    "openclaw-cli",
+    "ai",
     "daemon",
-    "doctor",
-    "cli"
+    "gateway",
+    "watchdog",
+    "health-check"
   ],
   "license": "MIT",
   "repository": {
@@ -45,7 +47,7 @@
   },
   "author": "pdd <ywq1991@gmail.com>",
   "bugs": {
-    "url": "https://github.com/Sobranier/openclaw-doctor/issues"
+    "url": "https://github.com/Sobranier/openclaw-cli/issues"
   },
-  "homepage": "https://github.com/Sobranier/openclaw-doctor#readme"
+  "homepage": "https://openclaw-cli.app"
 }

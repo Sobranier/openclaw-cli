@@ -1,22 +1,20 @@
 # megaclaw
 
-> This package is an alias for [openclaw-cli](https://www.npmjs.com/package/openclaw-cli).
+> This is an alias package for **[openclaw-cli](https://www.npmjs.com/package/openclaw-cli)** — the AI assistant gateway watchdog.
 
-CLI and health-watch daemon for OpenClaw AI assistant gateway.
+## 🌐 Official Site: [https://openclaw-cli.app](https://openclaw-cli.app)
 
-## Install
+Install and run:
 
 ```bash
 npm install -g megaclaw
 megaclaw watch -d
 ```
 
-## Usage
+This package is identical to `openclaw-cli`. All features, docs, and updates are maintained there.
 
-```bash
-megaclaw watch -d       # Start background monitoring
-megaclaw status         # Health check
-megaclaw unwatch        # Stop monitoring
-```
+## Links
 
-For full documentation, see [openclaw-cli](https://github.com/Sobranier/openclaw-cli).
+- 📦 Main package: [openclaw-cli on npm](https://www.npmjs.com/package/openclaw-cli)
+- 🌐 Website: [https://openclaw-cli.app](https://openclaw-cli.app)
+- 📖 Docs & Source: [github.com/Sobranier/openclaw-cli](https://github.com/Sobranier/openclaw-cli)
