@@ -1,0 +1,26 @@
+{
+  "appId": "sh.openclaw.cli",
+  "productName": "OpenClaw CLI",
+  "directories": {
+    "output": "out/dist"
+  },
+  "files": [
+    "app-dist/**/*",
+    "dist/**/*",
+    "assets/icons/**/*",
+    "node_modules/**/*",
+    "package.json"
+  ],
+  "mac": {
+    "icon": "assets/icons/icon.icns",
+    "category": "public.app-category.developer-tools",
+    "target": [
+      { "target": "dmg", "arch": ["arm64"] },
+      { "target": "zip", "arch": ["arm64"] }
+    ]
+  },
+  "dmg": {
+    "title": "OpenClaw CLI ${version}",
+    "icon": "assets/icons/icon.icns"
+  }
+}
