@@ -13,12 +13,32 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/v/openclaw-doctor?label=openclaw-doctor&color=red" alt="npm openclaw-doctor" /></a>
+  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/v/openclaw-doctor?label=openclaw-doctor&color=red" alt="npm version" /></a>
+  &nbsp;
+  <a href="https://www.npmjs.com/package/openclaw-doctor"><img src="https://img.shields.io/npm/dm/openclaw-doctor?color=red" alt="npm downloads" /></a>
   &nbsp;
   <a href="https://www.npmjs.com/package/openclaw-cli"><img src="https://img.shields.io/npm/v/openclaw-cli?label=openclaw-cli&color=blue" alt="npm openclaw-cli" /></a>
   &nbsp;
   <a href="https://www.npmjs.com/package/openclaw-manage"><img src="https://img.shields.io/npm/v/openclaw-manage?label=openclaw-manage&color=green" alt="npm openclaw-manage" /></a>
+  &nbsp;
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License" /></a>
+  &nbsp;
+  <img src="https://img.shields.io/node/v/openclaw-doctor" alt="Node version" />
 </p>
+
+---
+
+## Why Doctor?
+
+OpenClaw runs as a local daemon. When it crashes — network hiccup, system wake, bad update — your AI assistant goes dark. You notice only when you try to use it.
+
+**Doctor watches the gateway for you.** It detects failures, restarts the service automatically, and notifies you. No config, no babysitting.
+
+## Primary Package
+
+> **`openclaw-cli` is the primary package.** All package names (`openclaw-doctor`, `openclaw-manage`, `qclaw`, `aiclaw`, etc.) point to the same tool — install whichever name feels right, it works identically.
+>
+> `openclaw-doctor` is the original name and is kept for backward compatibility.
 
 ## Get Started
 
@@ -27,7 +47,11 @@ npm install -g openclaw-doctor
 openclaw-doctor watch -d
 ```
 
-That's it. Doctor monitors your OpenClaw gateway in the background, restarts it when it goes down, and tells you what happened. Zero configuration needed -- it reads everything from your existing OpenClaw setup.
+That's it. Doctor is now running in the background. It reads everything from your existing OpenClaw setup — no configuration needed.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-doctor/main/assets/demo.gif" alt="OpenClaw Doctor demo" width="700" />
+</p>
 
 ## Core Commands
 
@@ -39,7 +63,7 @@ openclaw-doctor unwatch          # Stop monitoring
 openclaw-doctor status           # Quick health check
 ```
 
-These four commands cover 90% of daily use.
+These four cover 90% of daily use.
 
 ## Gateway Management
 
@@ -54,9 +78,9 @@ openclaw-doctor gateway restart  # Restart the gateway
 ```bash
 openclaw-doctor doctor           # Full diagnostics (binary, gateway, channels)
 openclaw-doctor logs             # View gateway logs
-openclaw-doctor logs --error     # View error logs only
-openclaw-doctor logs --doctor    # View Doctor's own event logs
-openclaw-doctor dashboard        # Web management UI (http://localhost:9090)
+openclaw-doctor logs --error     # Error logs only
+openclaw-doctor logs --doctor    # Doctor's own event logs
+openclaw-doctor dashboard        # Web management UI → http://localhost:9090
 ```
 
 ## Install
@@ -65,48 +89,43 @@ openclaw-doctor dashboard        # Web management UI (http://localhost:9090)
 # npm (recommended)
 npm install -g openclaw-doctor
 
-# or run without installing
+# Run without installing
 npx openclaw-doctor status
 ```
 
-Requires Node >= 22 (same as OpenClaw).
+> Requires Node.js >= 22 (same as OpenClaw).
 
 ## How It Works
 
-Doctor auto-detects your OpenClaw installation:
+Doctor auto-detects your OpenClaw installation — no manual config:
 
-- Reads `~/.openclaw/openclaw.json` for gateway port, channels, agents
-- Finds the launchd service from `~/Library/LaunchAgents/`
-- Checks health via `openclaw health --json` (real gateway RPC, not HTTP)
-- Restarts via `launchctl kickstart` when needed
-
-**You don't configure OpenClaw details.** Doctor figures them out.
+- Reads `~/.openclaw/openclaw.json` for gateway port, channels, and agents
+- Finds the launchd service under `~/Library/LaunchAgents/`
+- Checks health via `openclaw health --json` (real gateway RPC, not HTTP ping)
+- Restarts via `launchctl kickstart` when consecutive failures exceed the threshold
 
 ## All Commands
 
 | Command | Description |
 |---------|-------------|
-| **Monitoring** | |
 | `watch` | Start health monitoring (foreground) |
 | `watch -d` | Start health monitoring (background) |
 | `watch -d --dashboard` | Background monitoring + web dashboard |
 | `unwatch` | Stop monitoring |
-| **Gateway** | |
 | `gateway start` | Start the OpenClaw gateway |
 | `gateway stop` | Stop the gateway |
 | `gateway restart` | Restart the gateway |
-| **Info** | |
 | `status` | Show gateway and channel health |
 | `status --json` | Machine-readable JSON output |
 | `doctor` | Run full diagnostics |
 | `dashboard` | Start web management UI |
 | `logs` | Show gateway logs |
-| `logs --error` | Show error logs only |
-| `logs --doctor` | Show Doctor event logs |
+| `logs --error` | Error logs only |
+| `logs --doctor` | Doctor event logs |
 
 ## Configuration
 
-Config is stored at `~/.openclaw-doctor/config.json`. Created automatically on first run. Only Doctor's own preferences -- no OpenClaw settings needed.
+Auto-created at `~/.openclaw-doctor/config.json` on first run.
 
 ```json
 {
@@ -128,43 +147,32 @@ Config is stored at `~/.openclaw-doctor/config.json`. Created automatically on f
 }
 ```
 
-| Field | Description | Default |
-|-------|-------------|---------|
-| `checkInterval` | Seconds between health checks | `30` |
-| `failThreshold` | Consecutive failures before restart | `3` |
-| `dashboardPort` | Web dashboard port | `9090` |
-| `maxRestartsPerHour` | Restart throttle | `5` |
-| `openclawProfile` | OpenClaw profile to monitor (`default`, `dev`, ...) | `default` |
-| `notify.webhook.url` | Webhook for notifications | -- |
-| `notify.system.enabled` | macOS native notifications | `true` |
+| Field | Default | Description |
+|-------|---------|-------------|
+| `checkInterval` | `30` | Seconds between health checks |
+| `failThreshold` | `3` | Consecutive failures before restart |
+| `dashboardPort` | `9090` | Web dashboard port |
+| `maxRestartsPerHour` | `5` | Restart throttle (prevents restart loops) |
+| `openclawProfile` | `"default"` | OpenClaw profile to monitor |
+| `notify.webhook.url` | — | Webhook URL (DingTalk, Feishu, Slack, etc.) |
+| `notify.system.enabled` | `true` | macOS native notifications |
 
 ## Notifications
 
-Doctor notifies you across the full lifecycle:
+Doctor covers the full restart lifecycle:
 
-| Event | Example |
+| Event | Message |
 |-------|---------|
-| Monitoring started | "Doctor is watching your OpenClaw service" |
-| Health degraded | "Service unhealthy (attempt 2/3)" |
+| Started | "Doctor is watching your OpenClaw service" |
+| Degraded | "Service unhealthy (attempt 2/3)" |
 | Restarting | "Restarting gateway..." |
-| Restart succeeded | "Gateway back online" |
-| Restart failed | "Restart failed: [error]" |
-| Throttled | "Too many restarts, manual intervention needed" |
-| Recovered | "Service recovered on its own" |
-| Monitoring stopped | "Doctor stopped" |
+| Recovered | "Gateway back online" |
+| Failed | "Restart failed: [error]" |
+| Throttled | "Too many restarts — manual intervention needed" |
+| Self-recovered | "Service recovered on its own" |
+| Stopped | "Doctor stopped" |
 
-Channels: **Webhook** (DingTalk, Feishu, Slack, etc.) + **macOS system notifications**.
-
-## Skills Integration
-
-Doctor runs as a standalone daemon, callable by OpenClaw or other tools:
-
-```bash
-openclaw-doctor status --json    # Machine-readable output
-openclaw-doctor watch -d         # Idempotent -- safe to call repeatedly
-```
-
-If the caller crashes, Doctor keeps running.
+**Channels:** Webhook (DingTalk, Feishu, Slack, custom) + macOS system notifications.
 
 ## Architecture
 
@@ -186,19 +194,11 @@ If the caller crashes, Doctor keeps running.
                           +-----------------+
 ```
 
-## Development
+Doctor runs as a standalone daemon. If the calling process crashes, Doctor keeps running.
 
 ```bash
-git clone https://github.com/openclaw/openclaw-doctor.git
-cd openclaw-doctor
-npm install
-
-npm run dev -- status          # Quick test
-npm run dev -- watch           # Foreground monitoring
-npm run dev -- watch -d        # Background daemon
-npm run dev -- unwatch         # Stop daemon
-
-npm run build                  # Build for distribution
+openclaw-doctor status --json    # Machine-readable — pipe into scripts or agents
+openclaw-doctor watch -d         # Idempotent — safe to call repeatedly
 ```
 
 ## Roadmap
@@ -216,32 +216,27 @@ npm run build                  # Build for distribution
 - [ ] Multiple service monitoring
 - [ ] Linux systemd support
 
+## Development
+
+```bash
+git clone https://github.com/Sobranier/openclaw-doctor.git
+cd openclaw-doctor
+npm install
+
+npm run dev -- status          # Quick test
+npm run dev -- watch           # Foreground monitoring
+npm run dev -- watch -d        # Background daemon
+npm run dev -- unwatch         # Stop daemon
+
+npm run build                  # Build for distribution
+```
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the release and publish workflow.
+
 ## License
 
 [MIT](./LICENSE)
 
-## Publishing
+---
 
-This repo publishes two npm packages from the same codebase:
-
-- **`openclaw-doctor`** — the main package (`package.json`)
-- **`openclaw-cli`** — alias package (`package.openclaw-cli.json`)
-
-Both packages share the same version number and dist output.
-
-### Release a new version
-
-```bash
-# 1. Bump version (patch / minor / major)
-npm version patch
-
-# 2. Build + publish both packages
-npm run release
-```
-
-`npm run release` calls `scripts/publish.sh`, which:
-1. Builds once (`npm run build`)
-2. Publishes `openclaw-doctor` with the default `package.json`
-3. Temporarily swaps in `package.openclaw-cli.json`, publishes `openclaw-cli`, then restores
-
-To update the `openclaw-cli` package metadata (description, keywords, bin name, etc.), edit `package.openclaw-cli.json`. Keep `version` in sync — it's automatically picked up from whichever `package.json` is active during publish.
+Works with [OpenClaw](https://openclaw.ai) · Built for the OpenClaw ecosystem

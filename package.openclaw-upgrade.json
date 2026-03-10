@@ -1,6 +1,6 @@
 {
   "name": "openclaw-upgrade",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Upgrade helper for local OpenClaw services",
   "type": "module",
   "bin": {

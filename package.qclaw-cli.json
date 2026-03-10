@@ -1,0 +1,17 @@
+{
+  "name": "qclaw-cli",
+  "version": "0.3.0",
+  "description": "CLI and health-watch daemon for OpenClaw AI assistant gateway",
+  "keywords": ["openclaw", "cli", "ai", "daemon", "health-check"],
+  "main": "./dist/index.js",
+  "bin": {
+    "qclaw-cli": "./dist/index.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sobranier/openclaw-doctor.git"
+  },
+  "homepage": "https://github.com/Sobranier/openclaw-doctor",
+  "engines": { "node": ">=22" }
+}
