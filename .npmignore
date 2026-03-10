@@ -1,7 +1,16 @@
+# Only include dist and essential files
 src/
+app-dist/
+out/
+assets/
+homebrew/
+demo.tape
+logs/
+*.bak
+forge.config.js
+electron-builder.json
 tsup.config.ts
 tsconfig.json
-.gitignore
-logs/
-*.log
-.DS_Store
+scripts/
+README.*.md
+package.*.json

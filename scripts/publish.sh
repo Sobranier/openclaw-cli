@@ -65,6 +65,10 @@ ALL_ALIASES=(
   zhclaw
   hwclaw
   wxclaw
+  easyclaw
+  maxclaw
+  kimiclaw
+  coclaw
 )
 
 # Sync version from main package.json to all alias package.json files
