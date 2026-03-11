@@ -1,10 +1,10 @@
 {
-  "name": "easyclaw",
-  "version": "0.3.3",
+  "name": "alphaclaw",
+  "version": "0.3.4",
   "description": "AI assistant gateway watchdog — alias for openclaw-cli. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {
-    "easyclaw": "./dist/index.js"
+    "alphaclaw": "./dist/index.js"
   },
   "scripts": {
     "build": "tsup",

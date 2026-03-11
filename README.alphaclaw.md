@@ -1,4 +1,4 @@
-# nflxclaw
+# alphaclaw
 
 > Alias package for **[openclaw-cli](https://www.npmjs.com/package/openclaw-cli)**.
 
@@ -7,15 +7,15 @@ This package runs the same CLI engine as `openclaw-cli`.
 ## Install
 
 ```bash
-npm install -g nflxclaw
+npm install -g alphaclaw
 ```
 
 ## Usage
 
 ```bash
-nflxclaw watch -d
-nflxclaw status
-nflxclaw gateway restart
+alphaclaw watch -d
+alphaclaw status
+alphaclaw gateway restart
 ```
 
 ## Links
