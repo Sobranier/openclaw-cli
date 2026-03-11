@@ -1,0 +1,30 @@
+{
+  "name": "hello-claw",
+  "version": "0.3.3",
+  "description": "AI assistant gateway watchdog — alias for openclaw-cli. Visit https://openclaw-cli.app",
+  "keywords": [
+    "openclaw",
+    "openclaw-cli",
+    "ai",
+    "daemon",
+    "gateway",
+    "watchdog",
+    "health-check"
+  ],
+  "main": "./dist/index.js",
+  "bin": {
+    "hello-claw": "./dist/index.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sobranier/openclaw-cli.git"
+  },
+  "homepage": "https://openclaw-cli.app",
+  "bugs": {
+    "url": "https://github.com/Sobranier/openclaw-cli/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

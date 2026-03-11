@@ -69,6 +69,7 @@ ALL_ALIASES=(
   maxclaw
   kimiclaw
   coclaw
+  hello-claw
 )
 
 # Sync version from main package.json to all alias package.json files
