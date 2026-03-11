@@ -1,7 +1,17 @@
 {
   "name": "duclaw",
-  "version": "0.3.3",
-  "description": "AI assistant gateway watchdog \u2014 alias for openclaw-cli. Visit https://openclaw-cli.app",
+  "version": "0.3.5",
+  "description": "AI assistant gateway watchdog — alias for openclaw-cli. Visit https://openclaw-cli.app",
+  "type": "module",
+  "bin": {
+    "duclaw": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "tsc --noEmit"
+  },
   "keywords": [
     "openclaw",
     "openclaw-cli",
@@ -11,20 +21,33 @@
     "watchdog",
     "health-check"
   ],
-  "main": "./dist/index.js",
-  "bin": {
-    "duclaw": "./dist/index.js"
-  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Sobranier/openclaw-cli.git"
+    "url": "git+https://github.com/Sobranier/openclaw-cli.git"
   },
-  "homepage": "https://openclaw-cli.app",
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=22"
   },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "author": "pdd <ywq1991@gmail.com>",
   "bugs": {
     "url": "https://github.com/Sobranier/openclaw-cli/issues"
-  }
+  },
+  "homepage": "https://openclaw-cli.app"
 }

@@ -1,9 +1,10 @@
 {
   "name": "openclaw-cli",
-  "version": "0.3.4",
-  "description": "Health check and auto-restart daemon for local OpenClaw services",
+  "version": "0.3.5",
+  "description": "AI assistant gateway watchdog for OpenClaw. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {
+    "openclaw-cli": "./dist/index.js",
     "openclaw-doctor": "./dist/index.js"
   },
   "scripts": {
@@ -14,13 +15,18 @@
     "release": "bash scripts/publish.sh",
     "app:start": "electron .",
     "app:package": "electron-forge package",
-    "app:make": "electron-forge make"
+    "app:make": "electron-forge make",
+    "validate:aliases": "node scripts/validate-aliases.mjs",
+    "smoke:aliases": "bash scripts/smoke-aliases.sh"
   },
   "keywords": [
     "openclaw",
-    "health-check",
+    "openclaw-cli",
+    "ai",
     "daemon",
-    "doctor"
+    "gateway",
+    "watchdog",
+    "health-check"
   ],
   "license": "MIT",
   "repository": {
@@ -53,7 +59,7 @@
   },
   "author": "pdd <ywq1991@gmail.com>",
   "bugs": {
-    "url": "https://github.com/Sobranier/openclaw-doctor/issues"
+    "url": "https://github.com/Sobranier/openclaw-cli/issues"
   },
   "homepage": "https://openclaw-cli.app",
   "main": "app-dist/main.js",

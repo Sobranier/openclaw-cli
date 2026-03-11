@@ -1,20 +1,25 @@
 # pddclaw
 
-> This is an alias package for **[openclaw-cli](https://www.npmjs.com/package/openclaw-cli)** — the AI assistant gateway watchdog.
+> Alias package for **[openclaw-cli](https://www.npmjs.com/package/openclaw-cli)**.
 
-## 🌐 Official Site: [https://openclaw-cli.app](https://openclaw-cli.app)
+This package runs the same CLI engine as `openclaw-cli`.
 
-Install and run:
+## Install
 
 ```bash
 npm install -g pddclaw
-pddclaw watch -d
 ```
 
-This package is identical to `openclaw-cli`. All features, docs, and updates are maintained there.
+## Usage
+
+```bash
+pddclaw watch -d
+pddclaw status
+pddclaw gateway restart
+```
 
 ## Links
 
+- 🌐 Official site: [https://openclaw-cli.app](https://openclaw-cli.app)
 - 📦 Main package: [openclaw-cli on npm](https://www.npmjs.com/package/openclaw-cli)
-- 🌐 Website: [https://openclaw-cli.app](https://openclaw-cli.app)
-- 📖 Docs & Source: [github.com/Sobranier/openclaw-cli](https://github.com/Sobranier/openclaw-cli)
+- 📖 Source: [github.com/Sobranier/openclaw-cli](https://github.com/Sobranier/openclaw-cli)

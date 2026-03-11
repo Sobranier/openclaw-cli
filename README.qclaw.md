@@ -1,22 +1,25 @@
 # qclaw
 
-> This package is an alias for [openclaw-cli](https://www.npmjs.com/package/openclaw-cli).
+> Alias package for **[openclaw-cli](https://www.npmjs.com/package/openclaw-cli)**.
 
-CLI and health-watch daemon for OpenClaw AI assistant gateway.
+This package runs the same CLI engine as `openclaw-cli`.
 
 ## Install
 
 ```bash
 npm install -g qclaw
-qclaw watch -d
 ```
 
 ## Usage
 
 ```bash
-qclaw watch -d       # Start background monitoring
-qclaw status         # Health check
-qclaw unwatch        # Stop monitoring
+qclaw watch -d
+qclaw status
+qclaw gateway restart
 ```
 
-For full documentation, see [openclaw-cli](https://github.com/Sobranier/openclaw-cli).
+## Links
+
+- 🌐 Official site: [https://openclaw-cli.app](https://openclaw-cli.app)
+- 📦 Main package: [openclaw-cli on npm](https://www.npmjs.com/package/openclaw-cli)
+- 📖 Source: [github.com/Sobranier/openclaw-cli](https://github.com/Sobranier/openclaw-cli)
