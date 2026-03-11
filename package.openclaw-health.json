@@ -1,7 +1,7 @@
 {
   "name": "openclaw-health",
   "version": "0.3.5",
-  "description": "AI assistant gateway watchdog \u2014 alias for openclaw-cli. Visit https://openclaw-cli.app",
+  "description": "AI assistant gateway watchdog — alias for openclaw-cli. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {
     "openclaw-health": "./dist/index.js"
