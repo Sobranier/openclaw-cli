@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { loadConfig } from "../config.js";
 import { detectOpenClaw } from "../core/openclaw.js";
 import { checkHealth } from "../core/health-checker.js";
+import { trackCommand } from "../telemetry.js";
 
 export async function showStatus(options: {
   config?: string;
@@ -81,5 +82,6 @@ export async function showStatus(options: {
   console.log(chalk.gray(`  Config: ${info.configPath}`));
   console.log();
 
+  trackCommand("status", true).catch(() => {});
   process.exit(result.healthy ? 0 : 1);
 }

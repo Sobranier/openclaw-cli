@@ -1,6 +1,6 @@
 {
   "name": "jdclaw",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "AI assistant gateway watchdog — alias for openclaw-cli. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {

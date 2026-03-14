@@ -7,6 +7,7 @@ import { checkHealth } from "../core/health-checker.js";
 import { restartGateway, RestartThrottle } from "../core/process-manager.js";
 import { detectOpenClaw } from "../core/openclaw.js";
 import { join } from "node:path";
+import { trackCommand } from "../telemetry.js";
 
 export async function watchDaemon(options: {
   config?: string;
@@ -29,6 +30,7 @@ export async function watchDaemon(options: {
   // Write PID so `stop` can find us even in foreground
   writeFileSync(PID_FILE, String(process.pid));
 
+  trackCommand("watch start", true).catch(() => {});
   log("info", "OpenClaw Doctor started (foreground)");
   log("info", `Gateway port: ${info.gatewayPort}`);
   log("info", `Channels: ${info.channels.join(", ") || "none detected"}`);
@@ -154,8 +156,10 @@ export async function stopDaemon(options: { config?: string }) {
   try {
     process.kill(pid, "SIGTERM");
     console.log(chalk.green(`Doctor stopped (PID ${pid})`));
+    trackCommand("watch stop", true).catch(() => {});
   } catch (err) {
     console.log(chalk.red(`Failed to stop Doctor (PID ${pid}): ${err}`));
+    trackCommand("watch stop", false).catch(() => {});
   }
 
   // Wait briefly then clean up PID file

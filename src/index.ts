@@ -10,10 +10,15 @@ import { gatewayStart, gatewayStop, gatewayRestart } from "./commands/gateway.js
 import { memoryStatus, memorySearch, memoryCompact } from "./commands/memory.js";
 import { startDashboard } from "./dashboard/server.js";
 import { detectOpenClaw } from "./core/openclaw.js";
+import { telemetryOn, telemetryOff, telemetryStatus } from "./commands/telemetry.js";
+import { printFirstRunNotice } from "./telemetry.js";
 
 declare const __PACKAGE_VERSION__: string;
 const _PKG_VER = typeof __PACKAGE_VERSION__ !== 'undefined' ? __PACKAGE_VERSION__ : '0.2.1';
 const version = _PKG_VER;
+
+// Show first-run telemetry notice (only once, non-blocking)
+printFirstRunNotice();
 
 const program = new Command();
 
@@ -71,6 +76,16 @@ const gw = program
 addGlobalOpts(gw.command("start").description("Start the gateway")).action(gatewayStart);
 addGlobalOpts(gw.command("stop").description("Stop the gateway")).action(gatewayStop);
 addGlobalOpts(gw.command("restart").description("Restart the gateway")).action(gatewayRestart);
+
+// ── Telemetry ──
+
+const tele = program
+  .command("telemetry")
+  .description("Manage anonymous usage telemetry");
+
+tele.command("on").description("Enable telemetry").action(telemetryOn);
+tele.command("off").description("Disable telemetry").action(telemetryOff);
+tele.command("status").description("Show telemetry status").action(telemetryStatus);
 
 // ── Memory management ──
 

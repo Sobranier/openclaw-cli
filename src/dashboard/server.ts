@@ -8,7 +8,7 @@ import { loadConfig, DOCTOR_LOG_DIR } from "../config.js";
 import { detectOpenClaw, runOpenClawCmd } from "../core/openclaw.js";
 import { checkHealth } from "../core/health-checker.js";
 import { getCheckHistory, getRestartHistory, log } from "../core/logger.js";
-import { restartGateway } from "../core/process-manager.js";
+import { restartGateway, startGateway, stopGateway } from "../core/process-manager.js";
 import { scanWorkspaces } from "../core/workspace-scanner.js";
 import { scanCosts } from "../core/cost-scanner.js";
 
@@ -115,6 +115,11 @@ function renderShell(): string {
     <div class="nav-center">
       <span class="status-dot" :style="'background:' + statusColor"></span>
       <span class="status-label" :style="'color:' + statusColor" x-text="statusText"></span>
+    </div>
+    <div class="nav-actions" style="display:flex;gap:0.5rem;align-items:center;">
+      <button class="btn" style="background:#00A67E;color:#fff;padding:0.35rem 0.75rem;font-size:0.75rem;" :disabled="actionLoading" @click="doStart()">▶ Start</button>
+      <button class="btn btn-blue" style="padding:0.35rem 0.75rem;font-size:0.75rem;" :disabled="actionLoading" @click="doRestart()">↺ Restart</button>
+      <button class="btn" style="background:#ef4444;color:#fff;padding:0.35rem 0.75rem;font-size:0.75rem;" :disabled="actionLoading" @click="doStop()">■ Stop</button>
     </div>
     <div class="nav-right" x-text="lastCheck ? 'Updated ' + lastCheck : 'Loading...'"></div>
   </div>
@@ -443,6 +448,34 @@ function renderShell(): string {
           this.actionLoading = false;
         },
 
+        async doStart() {
+          this.actionLoading = true;
+          this.actionResult = '';
+          try {
+            const res = await fetch('/api/gateway/start', { method: 'POST' });
+            const d = await res.json();
+            this.actionResult = d.success ? 'Gateway started.' : ('Start failed: ' + (d.message ?? 'unknown'));
+            await this.refresh();
+          } catch (e) {
+            this.actionResult = 'Request failed: ' + e.message;
+          }
+          this.actionLoading = false;
+        },
+
+        async doStop() {
+          this.actionLoading = true;
+          this.actionResult = '';
+          try {
+            const res = await fetch('/api/gateway/stop', { method: 'POST' });
+            const d = await res.json();
+            this.actionResult = d.success ? 'Gateway stopped.' : ('Stop failed: ' + (d.message ?? 'unknown'));
+            await this.refresh();
+          } catch (e) {
+            this.actionResult = 'Request failed: ' + e.message;
+          }
+          this.actionLoading = false;
+        },
+
         async doDoctor() {
           this.actionLoading = true;
           this.actionResult = '';
@@ -523,6 +556,34 @@ async function handleApiRestart(
   }
 }
 
+async function handleApiGatewayStart(
+  info: ReturnType<typeof detectOpenClaw>,
+  res: ServerResponse,
+) {
+  try {
+    const result = await startGateway(info);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: result.success, message: result.output ?? result.error ?? "" }));
+  } catch (err) {
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: false, message: String(err) }));
+  }
+}
+
+async function handleApiGatewayStop(
+  info: ReturnType<typeof detectOpenClaw>,
+  res: ServerResponse,
+) {
+  try {
+    const result = await stopGateway(info);
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: result.success, message: result.output ?? result.error ?? "" }));
+  } catch (err) {
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: false, message: String(err) }));
+  }
+}
+
 async function handleApiDoctor(
   info: ReturnType<typeof detectOpenClaw>,
   res: ServerResponse,
@@ -578,6 +639,10 @@ export function startDashboard(options: { config?: string; profile?: string }) {
       handleApiLogs(res);
     } else if (method === "POST" && url === "/api/restart") {
       await handleApiRestart(info, res);
+    } else if (method === "POST" && url === "/api/gateway/start") {
+      await handleApiGatewayStart(info, res);
+    } else if (method === "POST" && url === "/api/gateway/stop") {
+      await handleApiGatewayStop(info, res);
     } else if (method === "POST" && url === "/api/doctor") {
       await handleApiDoctor(info, res);
     } else {

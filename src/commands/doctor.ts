@@ -3,6 +3,7 @@ import chalk from "chalk";
 import { loadConfig } from "../config.js";
 import { detectOpenClaw, runOpenClawCmd } from "../core/openclaw.js";
 import { checkHealth } from "../core/health-checker.js";
+import { trackCommand } from "../telemetry.js";
 
 interface ConfigIssue {
   path: string;
@@ -154,5 +155,6 @@ export async function runDoctor(options: {
     }
   }
 
+  trackCommand("doctor", true).catch(() => {});
   console.log();
 }
