@@ -1,6 +1,6 @@
 {
   "name": "bdclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw CLI for Baidu AI users — gateway watchdog for ERNIE Bot. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

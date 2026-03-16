@@ -1,6 +1,6 @@
 {
   "name": "ddclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw CLI for DingTalk AI users. AI gateway watchdog. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

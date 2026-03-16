@@ -1,6 +1,6 @@
 {
   "name": "metaclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw CLI for Meta AI users — gateway watchdog for LLaMA-powered AI assistants.",
   "type": "module",
   "bin": {

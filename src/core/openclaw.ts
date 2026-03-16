@@ -213,10 +213,14 @@ export function getRestartCommand(info: OpenClawInfo): string {
 
 export function getStopCommand(info: OpenClawInfo): string {
   const uid = process.getuid?.() ?? 501;
-  return `launchctl kill SIGTERM gui/${uid}/${info.launchdLabel}`;
+  // Use bootout to truly stop the service so launchd KeepAlive won't revive it.
+  // Fall back to kill SIGTERM if bootout fails (service not loaded).
+  return `launchctl bootout gui/${uid}/${info.launchdLabel} 2>/dev/null || launchctl kill SIGTERM gui/${uid}/${info.launchdLabel} 2>/dev/null || true`;
 }
 
 export function getStartCommand(info: OpenClawInfo): string {
   const uid = process.getuid?.() ?? 501;
-  return `launchctl kickstart gui/${uid}/${info.launchdLabel}`;
+  // Re-bootstrap plist if service was booted out, then kickstart.
+  const plistDir = `${process.env.HOME}/Library/LaunchAgents`;
+  return `(launchctl bootstrap gui/${uid} ${plistDir}/${info.launchdLabel}.plist 2>/dev/null || true) && launchctl kickstart gui/${uid}/${info.launchdLabel}`;
 }

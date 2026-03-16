@@ -1,5 +1,7 @@
 import chalk from "chalk";
-import { loadConfig } from "../config.js";
+import { writeFileSync, unlinkSync, existsSync } from "node:fs";
+import { loadConfig, STOP_FLAG_FILE, DOCTOR_HOME } from "../config.js";
+import { ensureDoctorHome } from "../config.js";
 import { detectOpenClaw } from "../core/openclaw.js";
 import {
   startGateway,
@@ -18,10 +20,13 @@ export async function gatewayStart(options: {
 }) {
   const config = loadConfig(options.config);
   initLogger();
+  ensureDoctorHome();
   const info = detectOpenClaw(options.profile ?? config.openclawProfile);
+  // Clear stop flag so watch daemon resumes monitoring
+  try { unlinkSync(STOP_FLAG_FILE); } catch {}
   const result = await startGateway(info);
   if (result.success) {
-    console.log(chalk.green("Gateway started"));
+    console.log(chalk.green("Gateway started (auto-restart resumed)"));
     trackCommand("gateway start", true, _VER).catch(() => {});
   } else {
     console.log(chalk.red(`Failed to start gateway: ${result.error}`));
@@ -36,10 +41,14 @@ export async function gatewayStop(options: {
 }) {
   const config = loadConfig(options.config);
   initLogger();
+  ensureDoctorHome();
   const info = detectOpenClaw(options.profile ?? config.openclawProfile);
   const result = await stopGateway(info);
   if (result.success) {
-    console.log(chalk.green("Gateway stopped"));
+    // Write stop flag so watch daemon won't auto-restart
+    writeFileSync(STOP_FLAG_FILE, new Date().toISOString());
+    console.log(chalk.green("Gateway stopped (auto-restart paused)"));
+    console.log(chalk.gray("  Run `gateway start` to resume."));
     trackCommand("gateway stop", true, _VER).catch(() => {});
   } else {
     console.log(chalk.red(`Failed to stop gateway: ${result.error}`));
@@ -54,10 +63,13 @@ export async function gatewayRestart(options: {
 }) {
   const config = loadConfig(options.config);
   initLogger();
+  ensureDoctorHome();
   const info = detectOpenClaw(options.profile ?? config.openclawProfile);
+  // Clear stop flag so watch daemon resumes monitoring
+  try { unlinkSync(STOP_FLAG_FILE); } catch {}
   const result = await restartGateway(info);
   if (result.success) {
-    console.log(chalk.green("Gateway restarted"));
+    console.log(chalk.green("Gateway restarted (auto-restart resumed)"));
     trackCommand("gateway restart", true, _VER).catch(() => {});
   } else {
     console.log(chalk.red(`Failed to restart gateway: ${result.error}`));

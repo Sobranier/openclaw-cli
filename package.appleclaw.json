@@ -1,6 +1,6 @@
 {
   "name": "appleclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw CLI for macOS — native AI gateway watchdog and manager for Apple Silicon.",
   "type": "module",
   "bin": {

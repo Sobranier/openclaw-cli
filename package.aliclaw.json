@@ -1,6 +1,6 @@
 {
   "name": "aliclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw CLI — AI gateway watchdog, simple alias for openclaw-cli.",
   "type": "module",
   "bin": {

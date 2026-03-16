@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { writeFileSync, readFileSync, existsSync, unlinkSync, openSync } from "node:fs";
 import chalk from "chalk";
-import { loadConfig, PID_FILE, DOCTOR_LOG_DIR, ensureDoctorHome } from "../config.js";
+import { loadConfig, PID_FILE, STOP_FLAG_FILE, DOCTOR_LOG_DIR, ensureDoctorHome } from "../config.js";
 import { initLogger, log } from "../core/logger.js";
 import { checkHealth } from "../core/health-checker.js";
 import { restartGateway, RestartThrottle } from "../core/process-manager.js";
@@ -49,6 +49,12 @@ export async function watchDaemon(options: {
   async function tick() {
     if (isRestarting) return;
 
+    // If gateway was manually stopped, do NOT auto-restart
+    if (existsSync(STOP_FLAG_FILE)) {
+      log("info", "Gateway is manually stopped — skipping auto-restart");
+      return;
+    }
+
     const result = await checkHealth(info);
 
     if (result.healthy) {
@@ -77,7 +83,7 @@ export async function watchDaemon(options: {
 
       await restartGateway(info);
 
-      log("info", "Waiting 30s for gateway to start...");
+      log("info", "Waiting 60s for gateway to start...");
       await new Promise((r) => setTimeout(r, 60_000));
       isRestarting = false;
     }

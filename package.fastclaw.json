@@ -1,6 +1,6 @@
 {
   "name": "fastclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Fast AI gateway launcher — quick start for openclaw-cli with minimal config.",
   "type": "module",
   "bin": {

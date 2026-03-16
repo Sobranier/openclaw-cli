@@ -1,6 +1,6 @@
 {
   "name": "hello-claw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Hello OpenClaw! — the easiest way to get started with openclaw-cli gateway management.",
   "type": "module",
   "bin": {

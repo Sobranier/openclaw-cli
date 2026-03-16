@@ -1,6 +1,6 @@
 {
   "name": "alpha-claw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Alpha AI gateway monitor — lightweight alias for openclaw-cli.",
   "type": "module",
   "bin": {

@@ -1,6 +1,6 @@
 {
   "name": "maxclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Maximum reliability AI gateway watchdog — openclaw-cli with extended health checks.",
   "type": "module",
   "bin": {

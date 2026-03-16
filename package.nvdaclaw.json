@@ -1,6 +1,6 @@
 {
   "name": "nvdaclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw gateway watchdog for NVIDIA AI workloads. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

@@ -1,6 +1,6 @@
 {
   "name": "txclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw CLI for Tencent Cloud AI users — gateway watchdog for Hunyuan. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

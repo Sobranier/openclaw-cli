@@ -1,6 +1,6 @@
 {
   "name": "openclaw-service",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "System service manager for OpenClaw — launchd integration for macOS. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

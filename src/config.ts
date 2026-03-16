@@ -6,6 +6,9 @@ export const DOCTOR_HOME = APP_HOME;
 export const CONFIG_PATH = join(APP_HOME, "config.json");
 export const DOCTOR_LOG_DIR = join(APP_HOME, "logs");
 export const PID_FILE = join(APP_HOME, "daemon.pid");
+// When this file exists, the watch daemon will NOT auto-restart the gateway.
+// Created by `gateway stop`, deleted by `gateway start` / `gateway restart`.
+export const STOP_FLAG_FILE = join(APP_HOME, "gateway.stopped");
 
 export interface DoctorConfig {
   checkInterval: number;

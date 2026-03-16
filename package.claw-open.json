@@ -1,6 +1,6 @@
 {
   "name": "claw-open",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Open your AI gateway — openclaw-cli compatible manager for OpenClaw assistant.",
   "type": "module",
   "bin": {

@@ -1,6 +1,6 @@
 {
   "name": "openclaw-daemon",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Background daemon for OpenClaw gateway — persistent AI assistant process manager.",
   "type": "module",
   "bin": {

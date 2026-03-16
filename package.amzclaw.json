@@ -1,6 +1,6 @@
 {
   "name": "amzclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "OpenClaw gateway monitor for Amazon/AWS AI deployments. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

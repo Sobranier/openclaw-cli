@@ -1,6 +1,6 @@
 {
   "name": "xclaw",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Extended OpenClaw CLI — alias for openclaw-cli with extra utilities.",
   "type": "module",
   "bin": {
