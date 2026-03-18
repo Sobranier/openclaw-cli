@@ -659,14 +659,51 @@ export function startDashboard(options: { config?: string; profile?: string }) {
 
   // Remote reporting
   const REMOTE_CONFIG_PATH = join(DOCTOR_HOME, "remote.json");
+  const REMOTE_API_URL = "https://api.openclaw-cli.app";
 
-  setInterval(async () => {
+  // Track gateway start time for uptime reporting
+  let gatewayStartTime: number | null = null;
+
+  const proxyFetch = async (url: string, opts: RequestInit): Promise<Response> => {
+    const proxyUrl = process.env.HTTPS_PROXY || process.env.https_proxy || process.env.ALL_PROXY || process.env.all_proxy;
+    if (proxyUrl) {
+      try {
+        const { ProxyAgent, fetch: uf } = await import("undici") as any;
+        return uf(url, { ...opts, dispatcher: new ProxyAgent(proxyUrl) }) as Response;
+      } catch {}
+    }
+    return fetch(url, opts);
+  };
+
+  // ── Event-driven report ───────────────────────────────────────────────────────
+  // Poll health every 30s, but only write to KV when:
+  //   (a) state has changed (healthy flip, channels change), OR
+  //   (b) 10 minutes have passed since last report (heartbeat)
+  const HEARTBEAT_INTERVAL_MS = 10 * 60 * 1000; // 10 min
+  const POLL_INTERVAL_MS = 30_000;               // 30s health check
+
+  let lastReportedHealthy: boolean | null = null;
+  let lastReportedChannels: string = "";
+  let lastReportedAt: number = 0;
+
+  const doReport = async (reason: string) => {
     try {
       if (!existsSync(REMOTE_CONFIG_PATH)) return;
       const cfg = JSON.parse(readFileSync(REMOTE_CONFIG_PATH, "utf-8"));
       if (!cfg.enabled || !cfg.machineToken) return;
 
       const status = await checkHealth(info);
+
+      // Track uptime
+      if (status.healthy) {
+        if (!gatewayStartTime) gatewayStartTime = Date.now();
+      } else {
+        gatewayStartTime = null;
+      }
+      const uptimeSeconds = gatewayStartTime
+        ? Math.floor((Date.now() - gatewayStartTime) / 1000)
+        : 0;
+
       const body = {
         machineId: cfg.machineId,
         hostname: osHostname(),
@@ -677,6 +714,7 @@ export function startDashboard(options: { config?: string; profile?: string }) {
           port: info.gatewayPort,
           durationMs: status.durationMs ?? 0,
           label: (info as any).launchdLabel ?? "",
+          uptimeSeconds,
         },
         agents: info.agents.map((a: any) => ({
           id: a.id,
@@ -688,8 +726,8 @@ export function startDashboard(options: { config?: string; profile?: string }) {
       };
 
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 3000);
-      await fetch(cfg.reportUrl, {
+      const timer = setTimeout(() => controller.abort(), 5000);
+      await proxyFetch(cfg.reportUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -699,10 +737,104 @@ export function startDashboard(options: { config?: string; profile?: string }) {
         signal: controller.signal,
       });
       clearTimeout(timer);
+
+      // Update last-reported state
+      lastReportedHealthy = status.healthy;
+      lastReportedChannels = JSON.stringify(status.channels ?? []);
+      lastReportedAt = Date.now();
+      log("info", `[remote-report] sent (reason=${reason})`);
     } catch {
       /* fire and forget */
     }
-  }, 30_000);
+  };
+
+  setInterval(async () => {
+    try {
+      if (!existsSync(REMOTE_CONFIG_PATH)) return;
+      const cfg = JSON.parse(readFileSync(REMOTE_CONFIG_PATH, "utf-8"));
+      if (!cfg.enabled || !cfg.machineToken) return;
+
+      const status = await checkHealth(info);
+      const channelsKey = JSON.stringify(status.channels ?? []);
+      const now = Date.now();
+
+      const healthChanged   = lastReportedHealthy !== status.healthy;
+      const channelsChanged = lastReportedChannels !== channelsKey;
+      const heartbeatDue    = now - lastReportedAt >= HEARTBEAT_INTERVAL_MS;
+
+      if (healthChanged || channelsChanged || heartbeatDue) {
+        const reason = healthChanged ? "health-change"
+          : channelsChanged ? "channels-change"
+          : "heartbeat";
+        await doReport(reason);
+      }
+    } catch {
+      /* silent */
+    }
+  }, POLL_INTERVAL_MS);
+
+  // ── 15s control poll ─────────────────────────────────────────────────────────
+  // Poll for remote control commands (start / stop / restart)
+  const executedCommands = new Set<string>(); // dedup within session
+
+  setInterval(async () => {
+    try {
+      if (!existsSync(REMOTE_CONFIG_PATH)) return;
+      const cfg = JSON.parse(readFileSync(REMOTE_CONFIG_PATH, "utf-8"));
+      if (!cfg.enabled || !cfg.machineToken) return;
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3000);
+      const res = await proxyFetch(REMOTE_API_URL + "/v1/control/pending", {
+        headers: { Authorization: "Bearer " + cfg.machineToken },
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+
+      if (!res.ok) return;
+      const data = await res.json() as { command: { commandId: string; action: string } | null };
+      const cmd = data.command;
+      if (!cmd || executedCommands.has(cmd.commandId)) return;
+
+      executedCommands.add(cmd.commandId);
+      log("info", `[remote-control] action=${cmd.action} commandId=${cmd.commandId}`);
+
+      let ok = true;
+      let error: string | undefined;
+      try {
+        if (cmd.action === "start") {
+          await startGateway(info);
+          gatewayStartTime = Date.now();
+        } else if (cmd.action === "stop") {
+          await stopGateway(info);
+          gatewayStartTime = null;
+        } else if (cmd.action === "restart") {
+          await restartGateway(info);
+          gatewayStartTime = Date.now();
+        }
+      } catch (err) {
+        ok = false;
+        error = String(err);
+        log("warn", `[remote-control] failed: ${error}`);
+      }
+
+      // Ack back to server
+      const ackCtrl = new AbortController();
+      const ackTimer = setTimeout(() => ackCtrl.abort(), 3000);
+      await proxyFetch(REMOTE_API_URL + "/v1/control/ack", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + cfg.machineToken,
+        },
+        body: JSON.stringify({ commandId: cmd.commandId, ok, error }),
+        signal: ackCtrl.signal,
+      }).catch(() => {});
+      clearTimeout(ackTimer);
+    } catch {
+      /* fire and forget */
+    }
+  }, 15_000);
 }
 
 // === Change Summary ===
