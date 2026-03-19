@@ -26,3 +26,9 @@ Thumbs.db
 dist/
 logs/
 *.log
+
+# Build outputs
+out/
+*.dmg
+*.exe
+*.pkg
