@@ -83,6 +83,9 @@ for manifest in "${ALIAS_MANIFESTS[@]}"; do
   fi
 
   readme="README.${alias_name}.md"
+  if [ ! -f "$readme" ]; then
+    readme="aliases/readmes/${readme}"
+  fi
   echo ""
   publish_with_manifest "$manifest" "$readme"
 done
