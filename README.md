@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/welcome.png" alt="OpenClaw CLI" width="400" />
+  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/hero.png" alt="OpenClaw CLI" width="700" />
 </p>
 
 <h1 align="center">OpenClaw CLI</h1>
@@ -38,10 +38,6 @@ openclaw-cli watch -d
 ```
 
 That's it. OpenClaw CLI is now running in the background.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Sobranier/openclaw-cli/main/assets/demo.gif" alt="OpenClaw CLI demo" width="700" />
-</p>
 
 ## Core Commands
 
