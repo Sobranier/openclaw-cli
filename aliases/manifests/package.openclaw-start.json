@@ -1,6 +1,6 @@
 {
   "name": "openclaw-start",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Quick-start command for OpenClaw gateway — one command to launch your AI assistant. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

@@ -1,6 +1,6 @@
 {
   "name": "openclaw-gateway",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw gateway controller — start, stop and restart your AI assistant gateway. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

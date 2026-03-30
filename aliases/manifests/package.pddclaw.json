@@ -1,6 +1,6 @@
 {
   "name": "pddclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw CLI — gateway watchdog built for fast-moving AI deployments. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

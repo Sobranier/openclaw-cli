@@ -1,6 +1,6 @@
 {
   "name": "openclaw-tools",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Toolkit for managing OpenClaw AI assistant gateway. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

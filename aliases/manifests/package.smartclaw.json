@@ -1,6 +1,6 @@
 {
   "name": "smartclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Smart AI gateway watchdog — auto-healing OpenClaw monitor. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

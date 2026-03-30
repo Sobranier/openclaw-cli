@@ -1,6 +1,6 @@
 {
   "name": "openclaw-manage",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Manage multiple OpenClaw profiles and gateway instances. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

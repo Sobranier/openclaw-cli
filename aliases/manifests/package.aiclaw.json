@@ -1,6 +1,6 @@
 {
   "name": "aiclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "AI gateway watchdog CLI — monitor and manage AI assistant gateways with openclaw-cli.",
   "type": "module",
   "bin": {

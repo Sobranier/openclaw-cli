@@ -1,6 +1,6 @@
 {
   "name": "openclaw-health",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Health checker for OpenClaw — diagnose AI gateway connectivity and channel status. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

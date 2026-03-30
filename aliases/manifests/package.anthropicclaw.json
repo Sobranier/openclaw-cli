@@ -1,6 +1,6 @@
 {
   "name": "anthropicclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw CLI for Anthropic Claude users — gateway watchdog and monitor for Claude AI assistant.",
   "type": "module",
   "bin": {

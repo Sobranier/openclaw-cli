@@ -1,6 +1,6 @@
 {
   "name": "jdclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw gateway watchdog for JD.com AI services. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

@@ -1,6 +1,6 @@
 {
   "name": "openclaw-setup",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Setup and configuration tool for OpenClaw. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

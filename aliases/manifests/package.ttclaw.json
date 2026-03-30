@@ -1,6 +1,6 @@
 {
   "name": "ttclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw CLI for TikTok/ByteDance AI assistant gateway. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

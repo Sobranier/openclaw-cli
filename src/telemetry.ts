@@ -19,16 +19,29 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { APP_HOME } from "./brand.js";
 
-const MEASUREMENT_ID = "G-B46J8RT804";
-const API_SECRET = "qkqms1nURj2S02Q3WqO7GQ";
+// Injected at build time via tsup define (baked into dist/)
+const MEASUREMENT_ID = process.env.GA4_MEASUREMENT_ID;
+const API_SECRET = process.env.GA4_API_SECRET;
 const ENDPOINT = `https://www.google-analytics.com/mp/collect?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`;
 
 const TELEMETRY_FILE = join(APP_HOME, "telemetry.json");
+
+// Session ID: generated once per process lifetime
+const SESSION_ID = randomUUID();
 
 interface TelemetryState {
   client_id: string;
   opt_out: boolean;
   first_run_notified: boolean;
+}
+
+// ── Version ──────────────────────────────────────────────────────────────────
+
+declare const __PACKAGE_VERSION__: string;
+const _version = typeof __PACKAGE_VERSION__ !== "undefined" ? __PACKAGE_VERSION__ : "0.0.0";
+
+export function getVersion(): string {
+  return _version;
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -125,6 +138,13 @@ export function printFirstRunNotice() {
     "\n  📊 OpenClaw collects anonymous usage data to improve the product.\n" +
     "     To opt out: openclaw telemetry off  (or set OPENCLAW_NO_TELEMETRY=1)\n\n"
   );
+
+  // Track first run event
+  track("app_first_run", {
+    platform: "cli",
+    version: getVersion(),
+    os: process.platform,
+  });
 }
 
 // ── Event tracking ────────────────────────────────────────────────────────────
@@ -153,15 +173,19 @@ export async function track(eventName: string, opts: TrackOptions): Promise<void
   const params: Record<string, string | number | boolean> = {
     platform: opts.platform,
     engagement_time_msec: 1,
+    session_id: SESSION_ID,
+    app_version: opts.version ?? _version,
+    node_version: process.version,
+    os_type: opts.os ?? process.platform,
+    arch: process.arch,
     ...(opts.command !== undefined && { command: opts.command }),
     ...(opts.success !== undefined && { success: opts.success ? 1 : 0 }),
-    ...(opts.version !== undefined && { app_version: opts.version }),
-    ...(opts.os !== undefined && { os_type: opts.os }),
     ...opts.extra,
   };
 
   const payload = {
     client_id: state.client_id,
+    user_id: state.client_id,
     non_personalized_ads: true,
     events: [
       {

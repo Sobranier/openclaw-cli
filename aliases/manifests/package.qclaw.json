@@ -1,6 +1,6 @@
 {
   "name": "qclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Quick claw — fast alias for openclaw-cli gateway management.",
   "type": "module",
   "bin": {

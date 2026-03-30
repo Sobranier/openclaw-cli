@@ -1,6 +1,6 @@
 {
   "name": "openclaw-watch",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "File watcher and gateway watchdog for OpenClaw. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

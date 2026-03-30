@@ -1,6 +1,6 @@
 {
   "name": "hwclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw CLI for Huawei Cloud AI users. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

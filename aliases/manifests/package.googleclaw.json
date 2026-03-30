@@ -1,6 +1,6 @@
 {
   "name": "googleclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw CLI for Google AI users — gateway watchdog for Gemini-powered AI assistants.",
   "type": "module",
   "bin": {

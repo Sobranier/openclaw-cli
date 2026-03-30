@@ -6,6 +6,7 @@ import { createServer } from "node:http";
 import { exec } from "node:child_process";
 import { hostname } from "node:os";
 import { DOCTOR_HOME } from "../config.js";
+import { trackCommand, getVersion } from "../telemetry.js";
 
 // Proxy-aware fetch: reads HTTPS_PROXY / https_proxy / ALL_PROXY from env
 async function proxyFetch(url: string, init?: RequestInit): Promise<Response> {
@@ -220,6 +221,7 @@ export async function remoteLogin(_options: {
     email = result.email;
   } catch (err) {
     console.log(chalk.red(`  ${String(err)}`));
+    await trackCommand("remote login", false, getVersion());
     return;
   }
 
@@ -264,8 +266,10 @@ export async function remoteLogin(_options: {
     console.log(
       chalk.gray("  Remote monitoring ready. Run: openclaw-cli remote enable\n"),
     );
+    await trackCommand("remote login", true, getVersion());
   } catch (err) {
     console.log(chalk.red(`  Error: ${err}`));
+    await trackCommand("remote login", false, getVersion());
   }
 }
 
@@ -278,11 +282,13 @@ export async function remoteEnable(_options: {
     console.log(
       chalk.red("  ✗ Not logged in. Run: openclaw-cli remote login"),
     );
+    await trackCommand("remote enable", false, getVersion());
     return;
   }
   config.enabled = true;
   saveRemoteConfig(config);
   console.log(chalk.green("  Remote reporting enabled."));
+  await trackCommand("remote enable", true, getVersion());
 }
 
 export async function remoteDisable(_options: {
@@ -293,12 +299,14 @@ export async function remoteDisable(_options: {
   config.enabled = false;
   saveRemoteConfig(config);
   console.log(chalk.yellow("  Remote reporting disabled."));
+  await trackCommand("remote disable", true, getVersion());
 }
 
 export async function remoteStatus(_options: {
   config?: string;
   profile?: string;
 }) {
+  await trackCommand("remote status", true, getVersion());
   const config = loadRemoteConfig();
 
   console.log(chalk.cyan.bold("\n  Remote Monitoring Status\n"));

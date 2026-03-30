@@ -1,6 +1,6 @@
 {
   "name": "openclaw-run",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Run and supervise OpenClaw gateway processes. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

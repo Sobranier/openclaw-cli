@@ -1,6 +1,6 @@
 {
   "name": "openclaw-cli",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "AI gateway watchdog for OpenClaw — monitor, start, stop and auto-restart your AI assistant gateway from the CLI. Visit https://openclaw-cli.app",
   "type": "module",
   "bin": {

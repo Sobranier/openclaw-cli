@@ -1,6 +1,6 @@
 {
   "name": "autoopenclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Auto-managed OpenClaw gateway — set it and forget it watchdog. Alias of openclaw-cli.",
   "type": "module",
   "bin": {

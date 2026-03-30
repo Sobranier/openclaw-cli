@@ -1,6 +1,6 @@
 {
   "name": "open-claw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Open source AI gateway watchdog — openclaw-cli for the community.",
   "type": "module",
   "bin": {

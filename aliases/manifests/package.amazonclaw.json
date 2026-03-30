@@ -1,6 +1,6 @@
 {
   "name": "amazonclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenClaw CLI for AWS users — gateway watchdog and health monitor for cloud AI assistants.",
   "type": "module",
   "bin": {

@@ -1,6 +1,6 @@
 {
   "name": "qclaw-cli",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Quick OpenClaw CLI — minimal wrapper for openclaw-cli gateway watchdog.",
   "type": "module",
   "bin": {

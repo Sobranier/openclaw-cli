@@ -1,6 +1,6 @@
 {
   "name": "easyclaw",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Easy-to-use AI gateway watchdog — the simplest way to manage openclaw-cli.",
   "type": "module",
   "bin": {
