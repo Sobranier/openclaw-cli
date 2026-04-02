@@ -7,7 +7,9 @@ import { showStatus } from "./commands/status.js";
 import { runDoctor } from "./commands/doctor.js";
 import { showLogs } from "./commands/logs.js";
 import { gatewayStart, gatewayStop, gatewayRestart } from "./commands/gateway.js";
-import { memoryStatus, memorySearch, memoryCompact } from "./commands/memory.js";
+import { memoryStatus, memorySearch, memoryCompact, memoryGc, memoryExport } from "./commands/memory.js";
+import { showCost } from "./commands/cost.js";
+import { mcpList, mcpStatus } from "./commands/mcp.js";
 import { startDashboard } from "./dashboard/server.js";
 import { detectOpenClaw } from "./core/openclaw.js";
 import { telemetryOn, telemetryOff, telemetryStatus } from "./commands/telemetry.js";
@@ -78,6 +80,25 @@ addGlobalOpts(gw.command("start").description("Start the gateway")).action(gatew
 addGlobalOpts(gw.command("stop").description("Stop the gateway")).action(gatewayStop);
 addGlobalOpts(gw.command("restart").description("Restart the gateway")).action(gatewayRestart);
 
+// ── Cost analysis ──
+
+addGlobalOpts(
+  program
+    .command("cost")
+    .description("Show token usage and cost summary per agent/model")
+    .option("--json", "Machine-readable JSON output")
+    .option("--days <n>", "Limit date range (default: 30)"),
+).action(showCost);
+
+// ── MCP server management ──
+
+const mcp = program
+  .command("mcp")
+  .description("Manage local MCP (Model Context Protocol) servers");
+
+mcp.command("list").description("List configured MCP servers and their status").action(mcpList);
+mcp.command("status").description("Show detailed info for an MCP server").argument("<name>", "Server name").action(mcpStatus);
+
 // ── Telemetry ──
 
 const tele = program
@@ -108,6 +129,19 @@ addGlobalOpts(
     .description("Compact agent memory (proxies to openclaw memory compact)")
     .option("--dry-run", "Preview without applying"),
 ).action(memoryCompact);
+
+addGlobalOpts(
+  mem.command("gc")
+    .description("Remove old daily memory files")
+    .option("--days <n>", "Max age in days (default: 30)")
+    .option("--force", "Skip confirmation prompt"),
+).action(memoryGc);
+
+addGlobalOpts(
+  mem.command("export")
+    .description("Export all memory files to a single markdown file")
+    .option("-o, --output <file>", "Output file (default: stdout)"),
+).action(memoryExport);
 
 // ── Remote monitoring ──
 
